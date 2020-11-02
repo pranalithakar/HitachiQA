@@ -1,0 +1,51 @@
+﻿{
+  "BaseRateFactors": {
+    "Fields": [ "BaseRateFactors" ]
+  },
+  "IsAccidentPreventionFactors": {
+    "Fields": [ "Accident Prevention" ]
+  },
+  "ClassCodeFactors": {
+    "Fields": [ "Class Code" ]
+  },
+  "CoveredAutosFactors": {
+    "Fields": [ "Covered Autos" ]
+  },
+  "RadiusFactors": {
+    "Fields": [ "Radius" ]
+  },
+  "VehicleAgeFactors": {
+    "Fields": [ "Vehicle Age" ]
+  },
+  "FleetSizeFactors": {
+    "Fields": [ "Fleet Size" ]
+  },
+  "OrganizationTypeFactors": {
+    "Fields": [ "Organization Type" ]
+  },
+  "MotorCarrierFilingTypeFactors": {
+    "Fields": [ "Motor Carrier Filing Type" ]
+  },
+  "InsuranceScoreTierFactors": {
+    "Fields": [ "Insurance Score Tier" ]
+  },
+  "TerritoryFactors": {
+    "Fields": [ "Territory" ]
+  },
+  "ClassCode_RadiusFactors": {
+    "Fields": [ "Class Code", "Radius" ]
+  },
+  "ClassCode_MotorCarrierFilingTypeFactors": {
+    "Fields": [ "Class Code", "Motor Carrier Filing Type" ]
+  },
+  "ClassCode_OrganizationTypeFactors": {
+    "Fields": [ "Class Code", "Organization Type" ]
+  },
+  "BillingType_IsEFT_PaymentPlanFactors": {
+    "Fields": [ "Billing Type", "Payment Plan", "EFT" ]
+  }
+  //,
+  //"Driver Rating": {
+  //  "Fields": [ "Driver Rating" ]
+  //}
+}
