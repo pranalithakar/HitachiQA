@@ -28,14 +28,14 @@ namespace HitachiQA.Steps
         [Given(@"user landed in Google.com")]
         public void GivenUserLandedBiBerkPageWithValidURL()
         {
-            Pages.Home.navigate();
+            Pages.Google.navigate();
         }
 
         [When(@"user searches for (.*)")]
         public void WhenUserEntersAnd(string searchCriteria)
         {
 
-            Pages.Home.SearchInput.setText(searchCriteria);
+            Pages.Google.SearchInput.setText(searchCriteria);
             this.searchCriteria = searchCriteria;
 
 
@@ -45,13 +45,13 @@ namespace HitachiQA.Steps
         [When(@"user attempts to search")]
         public void WhenUserAttemptsToLogin()
         {
-            Pages.Home.SearchButton.Click();
+            Pages.Google.SearchButton.Click();
         }
        
-        [Then(@"user login successfully to biBerk page")]
+        [Then(@"user presented with search results")]
         public void ThenUserLoginSuccessfullyToBiBerkPage()
         {
-            Pages.Home.SearchInput.assertTextFieldTextEquals(this.searchCriteria);
+            Pages.Google.SearchInput.assertTextFieldTextEquals(this.searchCriteria);
 
             Log.Info("This is an infomrmaitonal Message");
             ScreenShot.Info();

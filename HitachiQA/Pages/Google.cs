@@ -7,13 +7,12 @@ using OpenQA.Selenium;
 
 namespace HitachiQA.Pages
 {
-    class Home 
+    class Google 
     {
-        public static string URL_PATH = "/";
-        public static void navigate() => UserActions.Navigate(URL_PATH);
+        public static string GOOGLE_URL = "https://google.com";
+        public static void navigate() => UserActions.Navigate(GOOGLE_URL);
         public static Element SearchInput => new Element("//input[@title='Search']");
         public static Element SearchButton => new Element("//input[@type='submit' and @aria-label='Google Search']");
-
 
     }
 }
