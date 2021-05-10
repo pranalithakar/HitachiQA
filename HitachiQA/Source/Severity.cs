@@ -37,16 +37,20 @@ namespace HitachiQA
             {INT_DEBUG,   "DEBUG"},
 
         };
-        public static Severity parseLevel(string level)
+        public static Severity parseLevel(String level)
         {
+            if(String.IsNullOrWhiteSpace(level))
+            {
+                return DEFAULT;
+            }
             try
             {
                 if(int.TryParse(level, out int int_level))
                 {
                     return new Severity(int_level);
                 }
-               
-                return new Severity(SEVERITIES.First(it => it.Value == level.ToUpper()).Key);
+                level = level.ToUpper();
+                return new Severity(SEVERITIES.First(it => it.Value == level).Key);
             }
             catch
             {

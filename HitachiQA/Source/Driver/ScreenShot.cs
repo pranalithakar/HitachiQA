@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using TechTalk.SpecFlow;
 using HitachiQA.Driver;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace HitachiQA
 {
@@ -53,8 +55,26 @@ namespace HitachiQA
                     string screenshotFilePath = Path.Combine(artifactDirectory, fileNameBase + "_screenshot.png");
 
                     screenshot.SaveAsFile(screenshotFilePath, ScreenshotImageFormat.Png);
+                    
+                    var screenshotBitMap = (Bitmap)Image.FromFile(screenshotFilePath);
 
-                    Console.WriteLine($"\nScreenshot: {new Uri(screenshotFilePath)}\n");
+                    var resultBitMap = new Bitmap(screenshotBitMap.Width, screenshotBitMap.Height + 30);
+
+                    using (Graphics g = Graphics.FromImage(resultBitMap))
+                    {
+                        g.DrawString(Setup.driver.Url, new Font("Arial", 20), Brushes.Red, new PointF(0, 0));
+                        g.DrawImageUnscaled(screenshotBitMap, 0, 30);
+
+                    }
+                    screenshotBitMap.Dispose();
+                    File.Delete(screenshotFilePath);
+
+                    resultBitMap.Save(screenshotFilePath, ImageFormat.Png);
+                    resultBitMap.Dispose();
+
+                    Console.WriteLine($"SCREENSHOT[ {screenshotFilePath} ]SCREENSHOT");
+
+
                 }
             }
         }

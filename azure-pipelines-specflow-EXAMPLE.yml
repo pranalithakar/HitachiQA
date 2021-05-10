@@ -9,7 +9,7 @@ trigger:
       - master
   paths:
     exclude:
-      - ApolloQA/*
+      - HitachiQA/*
 
 pool:
   vmImage: 'windows-latest'
@@ -18,18 +18,18 @@ variables:
 - name: BROWSER
   value: Chrome
 - name: SourceDir
-  value: '$(Build.SourcesDirectory)/ApolloQA'
+  value: '$(Build.SourcesDirectory)/HitachiQA'
 
 
 steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/ApolloQA.sln'
+    restoreSolution: '**/HitachiQA.sln'
     feedsToUse: 'select'
 - task: VSBuild@1
   inputs:
-    solution: '**\ApolloQA.sln'
+    solution: '**\HitachiQA.sln'
     restoreNugetPackages: true
 - task: PowerShell@2
   inputs:
@@ -45,7 +45,7 @@ steps:
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\ApolloQA.dll
+      **\HitachiQA.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
