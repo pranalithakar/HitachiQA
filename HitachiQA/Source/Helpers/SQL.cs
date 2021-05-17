@@ -38,7 +38,7 @@ namespace HitachiQA.Helpers
                 }
             }
 
-            using (SqlConnection connection = new SqlConnection(Environment.GetEnvironmentVariable("SQL_CONNECTIONSTRING")))
+            using (SqlConnection connection = new SqlConnection(Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("SQL_CONNECTIONSTRING_SECRETNAME"))))
             {
                 SqlCommand command = new SqlCommand(query, connection);
 

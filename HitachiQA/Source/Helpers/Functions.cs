@@ -385,31 +385,6 @@ namespace HitachiQA.Helpers
         }
       
 
-        public static dynamic GetCAB(int? usDotNumber)
-        {
-
-                string baseURL = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_BASEURL_SECRETNAME"));
-                string APIKEY = Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("CAB_API_KEY_SECRETNAME"));
-
-                if (usDotNumber == null)
-                {
-                    return null;
-                }
-
-                var response = RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/checkDOT/{usDotNumber}?key={APIKEY}");
-
-                if (!(bool)response.found)
-                {
-                    Log.Debug("usDot" + usDotNumber + " returned invalid from CAB");
-                    return null;
-                }
-
-                return RestAPI.GET($"{baseURL}/rest/services/biberk/carrier/{usDotNumber}?key={APIKEY}");
-         
-
-
-        }
-
         public static void MarkTestCasePassed(int testCaseId) 
         {
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
