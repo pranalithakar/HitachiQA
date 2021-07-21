@@ -53,16 +53,11 @@ namespace HitachiQA.Driver
                     break;
 
                 case "firefox":
-         
-                    FirefoxDriverService service = FirefoxDriverService.CreateDefaultService("C:\\Users\\mshahin\\source\\repos\\Hitachi-QA\\HitachiQA\\Source\\Driver", "geckodriver.exe");
-                    service.FirefoxBinaryPath = @"C:\Program Files\Mozilla Firefox\firefox.exe";
-                    driver = new FirefoxDriver(service);
+                    driver = new FirefoxDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                     break;
 
                 case "edge":
-
-                    //change the path to the debug folder to yours and ensure msedgedriver.exe file is located on your project driver folder
-                    string locations = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).Replace("C:\\Users\\mshahin\\source\\repos\\HitachiQA\\HitachiQA\\bin\\Debug", "HitachiQA\\Drivers\\msedgedriver.exe");
+                    string locations = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                     EdgeOptions edgeOptions = new EdgeOptions();
                     edgeOptions.UseChromium = true;
                     driver = new EdgeDriver(locations, edgeOptions);
