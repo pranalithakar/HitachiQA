@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
 using BoDi;
-using Microsoft.Azure.Cosmos;
-using Dynamitey;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using Microsoft.Edge.SeleniumTools;
 using TechTalk.SpecFlow;
 using HitachiQA.Helpers;
 using System.IO;
 using System.Reflection;
-using System.Configuration;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
 using System.Linq;
+
 
 namespace HitachiQA.Driver
 {
@@ -51,13 +46,28 @@ namespace HitachiQA.Driver
             switch (browser?.ToLower())
             {
                 case "chrome":
+
                     var options = new ChromeOptions();
                     options.AddArgument("--window-size=1920,1080");
                     driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), options);
                     break;
+
                 case "firefox":
-                    driver = new FirefoxDriver();
+         
+                    FirefoxDriverService service = FirefoxDriverService.CreateDefaultService("C:\\Users\\mshahin\\source\\repos\\Hitachi-QA\\HitachiQA\\Source\\Driver", "geckodriver.exe");
+                    service.FirefoxBinaryPath = @"C:\Program Files\Mozilla Firefox\firefox.exe";
+                    driver = new FirefoxDriver(service);
                     break;
+
+                case "edge":
+
+                    //change the path to the debug folder to yours and ensure msedgedriver.exe file is located on your project driver folder
+                    string locations = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).Replace("C:\\Users\\mshahin\\source\\repos\\HitachiQA\\HitachiQA\\bin\\Debug", "HitachiQA\\Drivers\\msedgedriver.exe");
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    edgeOptions.UseChromium = true;
+                    driver = new EdgeDriver(locations, edgeOptions);
+                    break;
+
                 default:
                     throw new NotImplementedException($"Environment variable BROWSER value={browser} is not supported");
             }

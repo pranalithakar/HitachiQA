@@ -18,8 +18,13 @@
 		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
 		<PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
 		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.1" />
+		<PackageReference Include="Microsoft.Edge.SeleniumTools" Version="3.141.2" />
 	    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	    <PackageReference Include="NUnit" Version="3.12.0" />
+	    <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.29.1" />
+	    <PackageReference Include="Selenium.WebDriver.MicrosoftWebDriver" Version="10.0.17134" />
+	    <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="91.0.864.37" />
+	    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.5.14" />
     	<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
 
 		<PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
@@ -28,11 +33,9 @@
 		<PackageReference Include="Microsoft.TestPlatform.TestHost" Version="16.8.3" />
 		<PackageReference Include="Selenium.Support" Version="3.141.0" />
 		<PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="90.0.4430.24" />
-		<PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.28.0" />
+		<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="91.0.4472.10100" />
 		<PackageReference Include="SpecFlow" Version="3.5.14" />
 		<PackageReference Include="SpecFlow.Assist.Dynamic" Version="1.4.2" />
-		<PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.5.14" />
 		<PackageReference Include="SpecRun.Runner" Version="3.5.22" />
 		<PackageReference Include="SpecRun.SpecFlow" Version="3.5.22" />
 		<PackageReference Include="System.Drawing.Common" Version="5.0.2" />
@@ -44,6 +47,9 @@
 	  </None>
 	  <None Update="qa1.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Source\Driver\geckodriver.exe">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 
