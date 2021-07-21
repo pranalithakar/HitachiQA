@@ -80,6 +80,7 @@ namespace HitachiQA.Driver
         [AfterScenario("newWindow", Order=1)]
         public static void post_NewWindow()
         {
+            driver.Close();
             driver.Quit();
             driver = driverTemp;
         }
@@ -192,6 +193,7 @@ namespace HitachiQA.Driver
         {
             if (Severity.parseLevel(Environment.GetEnvironmentVariable("CURRENT_SEVERITY_LEVEL")).Level != Severity.INT_DEBUG)
             {
+                driver.Close();
                 driver.Quit();
             }
             Cosmos.client.Dispose();
