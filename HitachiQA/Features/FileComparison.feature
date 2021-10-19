@@ -12,4 +12,3 @@ Scenario Outline: Compare Source file with FTP output
 Examples: 
 	| ExpectedFile   | ActualFile     |
 	| test1.txt      | test1.txt      |
-	| test2.txt      | test2.txt      |
