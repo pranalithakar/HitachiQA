@@ -24,15 +24,16 @@ namespace HitachiQA.Pages
 
 
 
-        public static Element GetButton(string displayName)
+        public static Element GetButton(string DisplayName)
         {
-            return new Element($"//button[contains(text(), '{displayName}')] |" +
-                              $"//*[@aria-label='{displayName}']");
+            return new Element($"//button[contains(text(), '{DisplayName}')] |" +
+                               $"//button[@data-dyn-controlname='{DisplayName}'][descendant::*[text() = 'Add']] |" +
+                              $"//*[@aria-label='{DisplayName}']");
         }
 
-        public static Element GetWorkSpace(string spaceName)
+        public static Element GetWorkSpace(string SpaceName)
         {
-            return new Element($"//*[@role='button'][descendant::*[contains(text(), '{spaceName}')]]");
+            return new Element($"//*[@role='button'][descendant::*[contains(text(), '{SpaceName}')]]");
         }
 
         public static Element GetModulesListItem(string ModuleName)
@@ -42,12 +43,18 @@ namespace HitachiQA.Pages
 
         public static Element GetTextField(string LabelName)
         {
-            return new Element($"//input[preceding-sibling::label[contains(text(), '{LabelName}')]]");
+            return new Element($"//input[preceding-sibling::label[contains(text(), '{LabelName}')]] |" +
+                               $"//input[@name='{LabelName}']");
         }
 
         public static Element GetDropdown(string DropdownName)
         {
             return new Element($"//input[@name='{DropdownName}']");
+        }
+
+        public static Element GetTabSection(string SectionName)
+        {
+            return new Element($"//*[@role='tab'][descendant::*[text() = '{SectionName}']]");
         }
     }
 }

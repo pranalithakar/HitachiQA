@@ -1,4 +1,5 @@
-﻿using HitachiQA.Driver;
+﻿using HitachiQA.Data.Entity;
+using HitachiQA.Driver;
 using HitachiQA.Helpers;
 using HitachiQA.Pages;
 using System;
@@ -11,6 +12,8 @@ namespace HitachiQA.StepDefinition.F_OSteps
     [Binding]
     public class VendorCreationSteps
     {
+        public Address Address;
+
         [Given(@"user navigates to dashobard")]
         public void GivenUserNavigatesToDashobard()
         {
@@ -45,8 +48,19 @@ namespace HitachiQA.StepDefinition.F_OSteps
             SharedObjects.GetTextField("Vendor account").setText("autoVendor" + uniqueID);
             SharedObjects.GetTextField("Name").setText("autoVendor" + uniqueID);
             SharedObjects.GetDropdown("Type").SelectDropdownOptionByText("Person");
+            SharedObjects.GetDropdown("Group").SelectDropdownOptionByText("One-time vendors");
 
         }
+
+        [Given(@"user enters vender Address Info")]
+        public void GivenUserEntersVenderAddressInfo()
+        {
+            Dictionary<string, string> inputs = Address.AddressInputs;
+            SharedObjects.GetTabSection("Addresses").Click();
+            SharedObjects.GetButton("NewAddress").Click();
+
+        }
+
 
         [Then(@"user successfully saves new Vendor")]
         public void ThenUserSuccessfullySavesNewVendor()
