@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System;
 using System.IO;
 
-namespace HitachiQA.Source.Helpers
+namespace HitachiQA.Helpers
 {
     public sealed class Cryptography
     {
