@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
+using HitachiQA.Source.Helpers;
 
 namespace HitachiQA.Helpers
 {
@@ -400,7 +401,16 @@ namespace HitachiQA.Helpers
                 Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
 
             }
-        }        
+        }
 
+        public static string EncryptString(string plainText)
+        {
+            return Cryptography.Encrypt(plainText);
+        }
+
+        public static string DecryptString(string encryptedText)
+        {
+            return Cryptography.Decrypt(encryptedText);
+        }
     }
 }

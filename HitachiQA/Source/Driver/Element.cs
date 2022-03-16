@@ -251,7 +251,7 @@ namespace HitachiQA.Driver
         // Dropdown actions 
         // 
 
-        public void SelectMatDropdownOptionByText( string optionDisplayText)
+        public void SelectMatDropdownOptionByText(string optionDisplayText)
         {
             UserActions.SelectMatDropdownOptionByText(locator, optionDisplayText);
         }
@@ -263,6 +263,11 @@ namespace HitachiQA.Driver
         public void SelectMatDropdownOptionByIndex(int LogicalIndex, out string selectionDisplayName)
         {
             UserActions.SelectMatDropdownOptionByIndex(locator, LogicalIndex, out selectionDisplayName);
+        }
+
+        public void SelectDropdownOptionByText(string optionDisplayText)
+        {
+            UserActions.selectDropdownOptionByText(locator, optionDisplayText);
         }
 
         public void SelectMatDropdownOptionByIndex(int LogicalIndex)
