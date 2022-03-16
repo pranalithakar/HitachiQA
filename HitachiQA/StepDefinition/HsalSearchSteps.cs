@@ -1,8 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TechTalk.SpecFlow;
 
 namespace HitachiQA.StepDefinition
@@ -54,7 +50,7 @@ namespace HitachiQA.StepDefinition
         [Then(@"user presented with search results from HSAL")]
         public void ThenUserPresentedWithSearchResultsFromHSAL()
         {
-            Pages.HsalHome.SearchInput.assertTextFieldTextEquals(this.searchCriteria);
+            Pages.HsalHome.ResultSearchInput.assertTextFieldTextEquals(this.searchCriteria);
 
             Log.Info("This is an infomrmaitonal Message");
             ScreenShot.Info();
