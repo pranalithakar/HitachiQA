@@ -54,7 +54,6 @@ namespace HitachiQA.Driver
             Log.Info("Navigate to: " + URL);
            
             Setup.driver.Navigate().GoToUrl(URL);
-            
         }
 
         public static string GetCurrentURL()

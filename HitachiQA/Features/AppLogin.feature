@@ -2,5 +2,5 @@
 	Field Service CRM Login
 
 @mytag
-Scenario: Add two numbers
+Scenario: Successful Login
 	Given user is landed on Apps page
