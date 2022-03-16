@@ -51,7 +51,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Features\CE_FieldService\" />
+	  <Folder Include="Features\" />
 	  <Folder Include="StepDefinition\" />
 	</ItemGroup>
 </Project>
