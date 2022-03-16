@@ -17,7 +17,7 @@ namespace HitachiQA.StepDefinition.F_OSteps
         [Given(@"user navigates to dashobard")]
         public void GivenUserNavigatesToDashobard()
         {
-            UserActions.Navigate(Environment.GetEnvironmentVariable("F&OHOST"));
+            UserActions.Navigate(Environment.GetEnvironmentVariable("HOST"));
             var button = SharedObjects.GetButton("Advanced");
             if(button.assertElementIsPresent(2, true) == true)
             {
