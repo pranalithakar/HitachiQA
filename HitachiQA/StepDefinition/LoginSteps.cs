@@ -15,8 +15,8 @@ namespace HitachiQA.StepDefinition
             UserActions.Navigate(Environment.GetEnvironmentVariable("HOST"));
             SharedObjects.GetInputField("email").setText(Environment.GetEnvironmentVariable("USERNAME"));
             SharedObjects.GetButton("Next").Click();
-            string password = Cryptography.Encrypt(Environment.GetEnvironmentVariable("PASSWORD"));
-            //string password = Cryptography.Decrypt(Environment.GetEnvironmentVariable("PASSWORD"));
+            string password = Functions.DecryptString(Environment.GetEnvironmentVariable("PASSWORD"));
+            SharedObjects.GetInputField("").setText(password);
         }
 
     }
