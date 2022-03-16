@@ -159,11 +159,7 @@ namespace HitachiQA.Helpers
                         tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex], filePath));
 
                     }
-
-
-
                 }
-
                 return tasks.Select(it => it.Result);
             }
             catch(Exception ex)
@@ -171,11 +167,8 @@ namespace HitachiQA.Helpers
                 Log.Debug($"File-> {filePath}");
                 throw ex;
             }
-          
-
-
-
         }
+
         public static List<Dictionary<String, String>> parseCSV(String filePath, int headerRow = 0)
         {
             List<string> header = new List<String>();
@@ -315,7 +308,6 @@ namespace HitachiQA.Helpers
             {
                 return GetRandomVIN();
             }
-
         }
 
         public static string GetValidDriverLicense(string state)
@@ -331,7 +323,6 @@ namespace HitachiQA.Helpers
             if(state.ToUpper() == "IL")
             {
                 licenseNo = ""+chars[r.Next(chars.Length)];
-
             }
 
             licenseNo += (r.Next(100, 1000).ToString()) + (r.Next(1000, 10000).ToString()) + (r.Next(1000, 10000).ToString());
@@ -380,8 +371,7 @@ namespace HitachiQA.Helpers
 
         public static int GetRandomInteger(int max=100)
         {
-           return new Random().Next(max);
-            
+           return new Random().Next(max);  
         }
       
 
@@ -398,9 +388,17 @@ namespace HitachiQA.Helpers
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))
             {
                 Setup.TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
-
             }
-        }        
+        }
 
+        public static string EncryptString(string plainText)
+        {
+            return Cryptography.Encrypt(plainText);
+        }
+
+        public static string DecryptString(string encryptedText)
+        {
+            return Cryptography.Decrypt(encryptedText);
+        }
     }
 }
