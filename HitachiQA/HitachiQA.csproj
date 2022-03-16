@@ -5,10 +5,6 @@
 	<PublishChromeDriver>true</PublishChromeDriver>
   </PropertyGroup>
 
-  <ItemGroup>
-    <SpecFlowObsoleteCodeBehindFiles Remove="Features\FileComparison.feature.cs" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.7.0" />
 		<PackageReference Include="Azure.Extensions.Configuration.Secrets" Version="1.0.0-preview.1" />
@@ -52,5 +48,10 @@
 	  <None Update="qa1.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Features\CE_FieldService\" />
+	  <Folder Include="StepDefinition\" />
 	</ItemGroup>
 </Project>
