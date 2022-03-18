@@ -58,7 +58,17 @@ namespace HitachiQA.StepDefinition.F_OSteps
             Dictionary<string, string> inputs = Address.AddressInputs;
             SharedObjects.GetTabSection("Addresses").Click();
             SharedObjects.GetButton("NewAddress").Click();
-
+            foreach(var entry in inputs)
+            {
+                try
+                {
+                    SharedObjects.GetTextField(entry.Key).setText(entry.Value);
+                }
+                catch
+                {
+                    SharedObjects.GetDropdown(entry.Key).SelectDropdownOptionByText(entry.Value);
+                }
+            }
         }
 
 

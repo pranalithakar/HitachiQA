@@ -16,7 +16,6 @@ using Newtonsoft.Json.Linq;
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
-using HitachiQA.Source.Helpers;
 
 namespace HitachiQA.Helpers
 {
