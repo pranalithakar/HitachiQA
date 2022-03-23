@@ -125,13 +125,13 @@ namespace HitachiQA.Driver
                 try
                 {
                     var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
-                    Action.DoubleClick(element);
+                    Action.DoubleClick(element).Build().Perform();
                 }
                 catch (StaleElementReferenceException)
                 {
                     Thread.Sleep(1000);
                     var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
-                    Action.DoubleClick(element);
+                    Action.DoubleClick(element).Build().Perform();
 
                 }
                 catch (ElementClickInterceptedException)
@@ -139,7 +139,7 @@ namespace HitachiQA.Driver
                     waitForPageLoad();
 
                     var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
-                    Action.DoubleClick(element);
+                    Action.DoubleClick(element).Build().Perform();
                 }
                 catch (Exception ex)
                 {
