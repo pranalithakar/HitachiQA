@@ -56,6 +56,11 @@ namespace HitachiQA.Driver
             UserActions.Click(locator);
         }
 
+        public void DoubleClick()
+        {
+            UserActions.DoubleClick(locator);
+        }
+
         public bool Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional =false)
         {
             return UserActions.Click(locator, wait_Seconds, optional);
