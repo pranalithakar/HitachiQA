@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TechTalk.SpecFlow;
@@ -24,7 +23,6 @@ namespace HitachiQA
         /// </summary>
         public static void Take(Severity severity, String filename =null)
         {
-
             var currentSev = Severity.parseLevel(Environment.GetEnvironmentVariable("CURRENT_SEVERITY_LEVEL")).Level;
 
             if (currentSev == 0)
@@ -73,8 +71,6 @@ namespace HitachiQA
                     resultBitMap.Dispose();
 
                     Console.WriteLine($"SCREENSHOT[ {screenshotFilePath} ]SCREENSHOT");
-
-
                 }
             }
         }

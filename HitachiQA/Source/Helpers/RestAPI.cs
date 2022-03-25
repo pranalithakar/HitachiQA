@@ -5,9 +5,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
-using TechTalk.SpecFlow;
 using HitachiQA.Driver;
-using System.Linq;
 
 namespace HitachiQA.Helpers
 {
@@ -42,15 +40,14 @@ namespace HitachiQA.Helpers
 
             client.Dispose();
             return ConsumeResponse(response, URL);
-
         }
         public static dynamic POST(String URL, dynamic body)
         {
             return POST(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
+
         public static dynamic POST(String URL, dynamic body, AuthenticationHeaderValue Authorization)
         {
-            
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -82,7 +79,6 @@ namespace HitachiQA.Helpers
         }
         public static dynamic POST(String URL, AuthenticationHeaderValue Authorization, HttpContent content)
         {
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -96,7 +92,6 @@ namespace HitachiQA.Helpers
             TimeSpan requestTime = DateTime.Now - start;
             timeSpans.Add(($"[POST] {URL}", requestTime.TotalSeconds));
 
-
             client.Dispose();
             return ConsumeResponse(response, URL, content);
         }
@@ -106,9 +101,9 @@ namespace HitachiQA.Helpers
         {
             return PATCH(URL, body, new AuthenticationHeaderValue("Bearer", getAuthToken()));
         }
+
         public static dynamic PATCH(String URL, dynamic body, AuthenticationHeaderValue Authorization)
         {
-
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(processURL(URL));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -133,10 +128,10 @@ namespace HitachiQA.Helpers
             TimeSpan requestTime = DateTime.Now - start;
             timeSpans.Add(($"[PATCH] {URL}", requestTime.TotalSeconds));
 
-
             client.Dispose();
             return ConsumeResponse(response, URL,body);
         }
+
         private static String processURL(String URL)
         {
             if (!URL.StartsWith("http"))
@@ -147,14 +142,11 @@ namespace HitachiQA.Helpers
                 }
                 return Environment.GetEnvironmentVariable("SERVER_HOST") + URL;
             }
-
             return URL;
         }
 
         private static dynamic ConsumeResponse(HttpResponseMessage response, string URL, dynamic body=null)
         {
-
-
             if(!response.IsSuccessStatusCode)
             {
                 Log.Critical(processURL(URL));
@@ -181,9 +173,7 @@ namespace HitachiQA.Helpers
             }
             String currentUser= (String)((IJavaScriptExecutor)Driver.Setup.driver).ExecuteScript("return window.localStorage.getItem('currentUser')");
             return (String)JsonConvert.DeserializeObject<dynamic>(currentUser)["accessToken"];
-
         }
-
 
         private static String _APIToken = null;
 

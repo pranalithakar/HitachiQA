@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HitachiQA.Helpers;
-using HitachiQA.Driver;
-using OpenQA.Selenium;
+﻿using HitachiQA.Driver;
 
 namespace HitachiQA.Pages
 {
@@ -15,7 +10,6 @@ namespace HitachiQA.Pages
         public static Element SearchInput => new Element("//*[@id='MF_form_phrase']");
         public static Element SearchButton => new Element("//*[@class='SearchBtn']");
         public static Element ResultSearchInput => new Element("//input[@title='search query']");
-        
     }
 }
 

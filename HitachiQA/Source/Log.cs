@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +6,8 @@ using System.Text;
 
 namespace HitachiQA
 {
-
     public static class Log
     {
-
         public static void Debug(object text) => Write(Severity.DEBUG, text);
         public static void Info(object text) => Write(Severity.INFO, text);
         public static void Warn(object text) => Write(Severity.WARN, text);
@@ -24,9 +21,6 @@ namespace HitachiQA
         public static void Error(string text, params (string key, dynamic value)[] parameters) => Write(Severity.ERROR, text, parameters);
         public static void Critical(string text, params (string key, dynamic value)[] parameters) => Write(Severity.CRITICAL, text, parameters);
 
-
-
-
         /// <summary>
         /// Will log text to the the given severity
         /// </summary>
@@ -37,6 +31,7 @@ namespace HitachiQA
         /// Log.info("informational message") <br/>
         /// </remarks>
         /// 
+
         public static void Write(Severity severity, object text)
         {
             var currentSev = Severity.parseLevel(Environment.GetEnvironmentVariable("CURRENT_SEVERITY_LEVEL")).Level;
@@ -47,8 +42,6 @@ namespace HitachiQA
             }
             else if (severity.Level <= currentSev)
             {
-
-
                 if (text is Dictionary<string, string>  || text is Dictionary<String, String>)
                 {
                     Log.Write(severity, ((Dictionary<String, String>)text).Select(entry => $"{entry.Key}:{entry.Value}"));
@@ -72,12 +65,11 @@ namespace HitachiQA
                 {
                     Console.WriteLine($"[{severity.Name}] {text}");
                 }
-
             }
         }
+
         public static void Write(Severity severity, string text, params (string key, dynamic value)[] parameters)
         {
-
             foreach(var parameter in parameters)
             {
                 if(!parameter.key.StartsWith('@'))
@@ -108,9 +100,9 @@ namespace HitachiQA
             {
 
                 Console.WriteLine($"[{severity.Name}] {text}");
-
             }
         }
+
         public static string EnumerableToHumanReadable(IEnumerable list)
         {
             var str = new StringBuilder();
@@ -121,8 +113,5 @@ namespace HitachiQA
             
             return "\n[" + str.ToString().Trim().Trim(',') + "]\n";
         }
-
     }
-
-    
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HitachiQA
 {
@@ -25,8 +24,6 @@ namespace HitachiQA
           DEFAULT = INFO;
        
 
-
-
         public static readonly Dictionary<int, string> SEVERITIES = new Dictionary<int, string>()
         {
             {INT_OFF,     "OFF" },
@@ -35,8 +32,8 @@ namespace HitachiQA
             {INT_WARN,    "WARN"},
             {INT_INFO,    "INFO"},
             {INT_DEBUG,   "DEBUG"},
-
         };
+
         public static Severity parseLevel(String level)
         {
             if(String.IsNullOrWhiteSpace(level))
@@ -70,7 +67,5 @@ namespace HitachiQA
                 throw new ArgumentException($"Severity Level: [{level}] is not valid");
             }
         }
-
-
     }
 }

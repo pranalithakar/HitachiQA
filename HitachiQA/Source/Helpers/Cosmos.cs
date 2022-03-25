@@ -1,17 +1,13 @@
 ﻿using Microsoft.Azure.Cosmos;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HitachiQA.Helpers
 {
     public class Cosmos
     {
-        
         public static CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("COSMOS_TARGETURL_SECRETNAME")), Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("COSMOS_APIKEY_SECRETNAME")));
-
 
         public static async Task<List<dynamic>> GetQuery(string containerA, string queryA)
         {
@@ -26,20 +22,16 @@ namespace HitachiQA.Helpers
                     foreach (var item in response)
                     {
                         result.Add(item);
-                      
                     }
                 }
             }
             return result;
-
         }
-
 
         public static void setProperty(string containerA, string identifierQuery,  string key, dynamic value)
         {
             var database = client.GetDatabase("apollo");
             var container = database.GetContainer(containerA);
-
 
             Log.Debug(containerA);
 
@@ -49,16 +41,7 @@ namespace HitachiQA.Helpers
             {
                record[key] = value;
                 _ = container.ReplaceItemAsync(record, (string)record.id).Result;
-
             }
-
-
-
         }
-
-
-
-
-
     }
 }

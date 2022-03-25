@@ -1,18 +1,11 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using TechTalk.SpecFlow.Assist;
 using HitachiQA.Driver;
-using OpenQA.Selenium.Chrome;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using CsvHelper;
 using System.Globalization;
 using CsvHelper.Configuration;
@@ -21,29 +14,30 @@ namespace HitachiQA.Helpers
 {
     class Functions
     {
-
         public static void ScrollToBottom()
         {
             UserActions.ScrollToBottom();
-
         }
+
         public static void ScrollToTop()
         {
             UserActions.ScrollToTop();
         }
+
         public static string GetCurrentURL()
         {
             return UserActions.GetCurrentURL();
         }
+
         public static string GetCurrentURLPath()
         {
             return new Uri(UserActions.GetCurrentURL()).PathAndQuery;
         }
+
         public static void refreshPage()
         {
             UserActions.Refresh();
         }
-
 
         public static string ParseURL(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
@@ -53,9 +47,9 @@ namespace HitachiQA.Helpers
             }
             return ParseURL(URL_OR_PATH);
         }
+
         public static string ParseURL(string URL_OR_PATH)
         {
-
             if (URL_OR_PATH.StartsWith("http"))
             {
                 return URL_OR_PATH;
@@ -65,11 +59,10 @@ namespace HitachiQA.Helpers
                 return ParseURL(Environment.GetEnvironmentVariable("HOST"), URL_OR_PATH);
             }
         }
+
         public static string ParseURL(string Host, string Path)
         {
-
             return Host + (Path.StartsWith('/') ? Path : "/" + Path);
-
         }
 
         //
@@ -92,8 +85,8 @@ namespace HitachiQA.Helpers
                 }
             }
             return ex ?? new Exception(message);
-
         }
+
         public static System.Exception handleFailure(string message, Exception ex = null, bool optional = false, params (string key, dynamic value)[] parameters)
         {
             if (optional)
@@ -111,8 +104,8 @@ namespace HitachiQA.Helpers
                 }
             }
             return ex ?? new Exception(message);
-
         }
+
         public static System.Exception handleFailure(Exception ex, bool optional = false)
         {
             if (optional)
@@ -125,9 +118,7 @@ namespace HitachiQA.Helpers
                 throw ex;
             }
             return ex;
-
         }
-
 
         public static Dictionary<string, string> TableToDictionary(TechTalk.SpecFlow.Table table)
         {
@@ -144,8 +135,6 @@ namespace HitachiQA.Helpers
             var tasks = new List<Task<Dictionary<String, String>>>();
             try
             {
-
-            
                 using (SpreadsheetDocument doc = SpreadsheetDocument.Open(filePath, false))
                 {
                     WorkbookPart workbookPart = doc.WorkbookPart;
@@ -157,7 +146,6 @@ namespace HitachiQA.Helpers
                     for (int rowIndex = 1; rowIndex < sheetData.Length; rowIndex++)
                     {
                         tasks.Add(parseRow(workbookPart, header, sheetData[rowIndex], filePath));
-
                     }
                 }
                 return tasks.Select(it => it.Result);
@@ -181,7 +169,6 @@ namespace HitachiQA.Helpers
 
             Log.Debug(filePath);
 
-
             List<Dictionary<String, String>> result = new List<Dictionary<String, String>>();
 
             using (TextReader reader = new StreamReader(filePath))
@@ -192,7 +179,6 @@ namespace HitachiQA.Helpers
                 };
                 using (var csvReader = new CsvReader(reader, config))
                 {
-
                     // calculate number of columns
                     csvReader.Read();
                     int i = 0;
@@ -201,7 +187,6 @@ namespace HitachiQA.Helpers
 
                     while (!String.IsNullOrEmpty(columnName))
                     {
-                      
                         header.Add(columnName);
                         i++;
                         columnName = csvReader.GetField(i);
@@ -209,7 +194,6 @@ namespace HitachiQA.Helpers
 
                     while (csvReader.Read())
                     {
-                        
                         Dictionary<String, String> row = new Dictionary<String, String>();
                         for(int col =0; col < header.Count; col++)
                         {
@@ -241,7 +225,6 @@ namespace HitachiQA.Helpers
                 try
                 {
                     dict.Add(header[i], extractCellText(workbookPart, cell));
-
                 }
                 catch(Exception ex)
                 {
@@ -264,6 +247,7 @@ namespace HitachiQA.Helpers
             }
             return (text ?? string.Empty).Trim();
         }
+
         public static dynamic parseRatingFactorNumericalValues(String value)
         {
             if (value.Contains("+"))
@@ -279,6 +263,7 @@ namespace HitachiQA.Helpers
                 return null;
             }
         }
+
         public static int parseInt(string IntegerString)
         {
             try
@@ -316,7 +301,6 @@ namespace HitachiQA.Helpers
 
             char[] chars =  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             Random r = new Random();
-
 
             string licenseNo = "";
             
@@ -374,7 +358,6 @@ namespace HitachiQA.Helpers
            return new Random().Next(max);  
         }
       
-
         public static void MarkTestCasePassed(int testCaseId) 
         {
             if (!Setup.TestCaseOutcome.ContainsKey(testCaseId))

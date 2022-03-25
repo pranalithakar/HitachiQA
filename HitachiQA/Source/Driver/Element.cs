@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using OpenQA.Selenium;
 using HitachiQA.Helpers;
 using System.Linq;
-using System.Xml.Serialization;
-using OpenQA.Selenium.Support.UI;
-using System.Threading;
-using NUnit.Framework.Constraints;
 
 namespace HitachiQA.Driver
 {
@@ -41,8 +36,7 @@ namespace HitachiQA.Driver
                 else
                 {
                     throw Functions.handleFailure(new NotImplementedException($"Locator string [{loc}] xpath conversion not built"));
-                }
-                
+                }     
             }
         }
 
@@ -68,14 +62,14 @@ namespace HitachiQA.Driver
 
         public bool TryClick(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
         {
-            return this.Click(wait_Seconds, true);
-            
+            return this.Click(wait_Seconds, true); 
         }
 
         public string GetAttribute(string attributeName)
         {
             return UserActions.GetAttribute(locator, attributeName);
         }
+
         public bool IsDisabled => UserActions.GetIsDisabled(locator);
 
         public string GetElementText()
@@ -87,6 +81,7 @@ namespace HitachiQA.Driver
         {
             return string.Join("", this.GetInnerTexts());
         }
+
         public List<String> GetInnerTexts()
         {
             return UserActions.FindElementsWaitUntilVisible(locator).Select(it => it.Text.Trim()).ToList();
@@ -100,10 +95,10 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-
             Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText}  did not contain expected \ntext: {text}"), optional);
             return false;
         }
+
         public bool assertElementTextEquals(string text, bool optional = false)
         {
             string elementText = this.GetElementText();
@@ -111,7 +106,6 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-
             Functions.handleFailure(new Exception($"Element {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {text}"), optional);
             return false;
         }
@@ -123,11 +117,9 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-
             Functions.handleFailure(new Exception($"Element {locator.ToString()} \ninner text: {innerText} did not equal expected\n      text: {text}"), optional);
             return false;
         }
-
 
         /// <summary>
         ///  Waits for the element to be vissible in the page
@@ -189,16 +181,13 @@ namespace HitachiQA.Driver
             }
             else if (state != isSelected)
             {
-                throw Functions.handleFailure($"Radio Button state did not match expected {state} \n {this}");       
-                
+                throw Functions.handleFailure($"Radio Button state did not match expected {state} \n {this}");                      
             }
             else
             {
                 return true;
             }
         }
-
-
 
         public IWebElement WaitUntilClickable(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
@@ -217,8 +206,7 @@ namespace HitachiQA.Driver
                     break;
                 default:
                     Functions.handleFailure(new NotImplementedException($"Field type: {fieldType} is not implemented"));
-                    break;
-                  
+                    break; 
             }
         }
 
@@ -247,7 +235,6 @@ namespace HitachiQA.Driver
             {
                 return true;
             }
-
             Functions.handleFailure(new Exception($"Text Field {locator.ToString()} \ntext: {elementText} did not equal expected\ntext: {expected}"), optional);
             return false;
         }
@@ -260,6 +247,7 @@ namespace HitachiQA.Driver
         {
             UserActions.SelectMatDropdownOptionByText(locator, optionDisplayText);
         }
+
         public void SelectMatDropdownOptionContainingText(string optionDisplayText)
         {
             UserActions.SelectMatDropdownOptionContainingText(locator, optionDisplayText);
@@ -302,7 +290,6 @@ namespace HitachiQA.Driver
             return UserActions.IsRadioButtonSelected(locator);
         }
 
-
         //
         //Checkbox button
         //
@@ -318,7 +305,6 @@ namespace HitachiQA.Driver
         public IEnumerable<Dictionary<String, String>> parseUITable()
         {
             return UserActions.parseUITable(this.Xpath);
-
         }
     }
 }

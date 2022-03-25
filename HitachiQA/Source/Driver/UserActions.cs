@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using HitachiQA.Helpers;
 using System.Linq;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
-using Utf8Json.Formatters;
 using OpenQA.Selenium.Interactions;
 
 namespace HitachiQA.Driver
@@ -45,7 +41,6 @@ namespace HitachiQA.Driver
             Log.Info("Navigate to: " + URL);
 
             Navigate(URL);
-            
         }
         
         public static void Navigate(string URL_OR_PATH)
@@ -53,8 +48,7 @@ namespace HitachiQA.Driver
             var URL = Functions.ParseURL(URL_OR_PATH);
             Log.Info("Navigate to: " + URL);
            
-            Setup.driver.Navigate().GoToUrl(URL);
-            
+            Setup.driver.Navigate().GoToUrl(URL);           
         }
 
         public static string GetCurrentURL()
@@ -163,7 +157,7 @@ namespace HitachiQA.Driver
 
         public static string GetAttribute(By ElementLocator, string attributeName)
         {
-          return FindElementWaitUntilClickable(ElementLocator).GetAttribute(attributeName);
+            return FindElementWaitUntilClickable(ElementLocator).GetAttribute(attributeName);
         }
 
         public static IWebElement FindElementWaitUntilVisible(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
@@ -349,12 +343,10 @@ namespace HitachiQA.Driver
                 WaitForElementToDisappear(By.XPath("//mat-option[descendant::*[normalize-space(text())= 'Searching...']]"));
             }catch(Exception)
             {
-
             }
             var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
             selectionDisplayName = string.Join("", Setup.driver.FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
             Click(By.XPath($"//mat-option[{LogicalIndex + 1}]"));
-
         }
 
         public static IEnumerable<String> GetAllMatDropdownOptions(By DropdownLocator)
@@ -362,7 +354,6 @@ namespace HitachiQA.Driver
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
             dropdown.Click();
             var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
-
 
             int currentOption = 1;
             foreach(var option in options)
@@ -392,13 +383,12 @@ namespace HitachiQA.Driver
         {
             var mattCheckBox = FindElementWaitUntilVisible(MattCheckBoxLocator);
 
-
             while (GetCheckboxState(By.Id(mattCheckBox.GetAttribute("id") + "-input")) != state)
             {
                 mattCheckBox.Click();
             }
-
         }
+
         public static bool GetMattCheckboxState(By MattCheckBoxLocator)
         {
             var mattCheckBox = FindElementWaitUntilClickable(MattCheckBoxLocator);
@@ -419,15 +409,15 @@ namespace HitachiQA.Driver
         {
             JSExecutor.execute($"arguments[0].scrollIntoView();", element);
         }
+
         public static void ScrollToBottom()
         {
-            new Actions(Setup.driver).SendKeys(Keys.End).Build().Perform();
-            
+            new Actions(Setup.driver).SendKeys(Keys.End).Build().Perform();  
         }
+
         public static void ScrollToTop()
         {
             new Actions(Setup.driver).SendKeys(Keys.Home).Build().Perform();
-
         }
 
         //
@@ -468,7 +458,6 @@ namespace HitachiQA.Driver
 
         }
 
-
         public static IEnumerable<Dictionary<String, String>> parseUITable(string datatableXpath)
         {
             FindElementWaitUntilPresent(By.XPath(datatableXpath));
@@ -477,7 +466,6 @@ namespace HitachiQA.Driver
             int rowCount = Driver.Setup.driver.FindElements(By.XPath(datatableXpath + "//datatable-body-row")).Count;
             for (int rowIndex = 1; rowIndex <= rowCount; rowIndex++)
             {
-
                 var rowDict = new Dictionary<String, String>();
 
                 for (int i = 0; i < columnNames.Count(); i++)

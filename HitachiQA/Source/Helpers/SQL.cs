@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Collections;
@@ -10,11 +9,11 @@ namespace HitachiQA.Helpers
 {
     class SQL
     {
-
         public static List<Dictionary<String, dynamic>> executeQuery(String query)
         {
             return executeQuery(query, ("",""));
         }
+
         public static List<Dictionary<String, dynamic>> executeQuery(String query, params (string key, dynamic value)[] parameters)
         {
             IEnumerable<(string key, dynamic value)> listParams = parameters.ToList().FindAll(param => !(param.value is string) && param.value is IEnumerable);
@@ -31,17 +30,14 @@ namespace HitachiQA.Helpers
                         parameters = parameters.Append((listParam.key + i, item)).ToArray();
                         i++;
                     }
-
                     var paramKeys = str.ToString().Trim().Trim(',');
                     query = query.Replace(listParam.key, paramKeys);
-
                 }
             }
 
             using (SqlConnection connection = new SqlConnection(Environment.GetEnvironmentVariable(Environment.GetEnvironmentVariable("SQL_CONNECTIONSTRING_SECRETNAME"))))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-
 
                 foreach (var parameter in parameters)
                 {

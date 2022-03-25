@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using HitachiQA.Helpers;
 using HitachiQA.Driver;
-using NUnit.Framework.Constraints;
 using NUnit.Framework;
-using System.Linq;
 using NUnitAssert = NUnit.Framework.Assert;
 namespace HitachiQA
 {
     class Assert
     {
-
         public static bool Contains(List<String> _object, string value, bool optional = false)
         {
-
             var list = new StringBuilder();
             list.Append("[\n");
             foreach (var item in _object)
@@ -30,12 +26,11 @@ namespace HitachiQA
             }
             else
             {
-                
-
                 Functions.handleFailure(new Exception($"List { list.ToString() } does not Contain\n[{ value}]"));
                 return false;
             }
         }
+
         public static bool TextContains(String text, String value, bool optional = false)
         {
             if(text== null || value == null)
@@ -50,12 +45,13 @@ namespace HitachiQA
             }
             Functions.handleFailure(new Exception($"Assert - text: [{text}] does not Contain  value: [{value}]"), optional);
             return false;
-
         }
+
         public static bool SoftAreEqual(object A, object B)
         {
             return AreEqual(A, B, true);
         }
+
         public static bool AreEqual(object A, object B, bool optional = false)
         {
             if(    (A == null || A is string && (string)A == "")     &&      (B == null || B is string && (string)B=="")     )
@@ -109,13 +105,12 @@ namespace HitachiQA
                 }
                 catch (Exception ex)
                 {
-
-
                     Functions.handleFailure("List @expected does not equal @actual", ex, optional, parameters);
                     return false;
                 }
             }
         }
+
         public static bool AreNotEqual(object A, object B, bool optional = false)
         {
             if (!A.Equals(B))
@@ -136,7 +131,6 @@ namespace HitachiQA
         /// <returns> will return true if the condition was true</returns>
         public static bool IsTrue(bool? condition, bool optional = false)
         {
-            
             if(condition.HasValue && condition.Value == true)
             {
                 success($"Condition {condition}");
@@ -155,7 +149,6 @@ namespace HitachiQA
         /// <returns> will return true if the condition equals false or null</returns>
         public static bool IsFalse(bool? condition, bool optional = false)
         {
-
             if (condition.HasValue && condition.Value == true)
             {
                 Functions.handleFailure(new Exception($"Assert is False - the given condition: {condition} was not false"), optional);
@@ -170,7 +163,6 @@ namespace HitachiQA
 
         public static bool IsNull(object _object, bool optional = false)
         {
-
             if (_object == null)
             {
                 success("Object is null");
@@ -178,14 +170,13 @@ namespace HitachiQA
             }
             else
             {
-                
                 Functions.handleFailure(new Exception($"Assert is Null - the given Object: {_object} was not null"), optional);
                 return false;
             }
         }
+
         public static bool IsNotNull(object _object, bool optional = false)
         {
-
             if (_object != null)
             {
                 success("Object is not null");
@@ -193,7 +184,6 @@ namespace HitachiQA
             }
             else
             {
-
                 Functions.handleFailure(new Exception($"Assert is Not Null - the given Object: {_object} was null"), optional);
                 return false;
             }
@@ -213,6 +203,7 @@ namespace HitachiQA
                 return false;
             }
         }
+
         public static bool CurrentURLContains(string URL, bool optional = false)
         {
             try
@@ -230,9 +221,7 @@ namespace HitachiQA
 
         private static void success(String message, params (string key, dynamic value)[] parameters)
         {
-
             Log.Info("Success - Assert: " + message, parameters);
         }
-
     }
 }

@@ -1,12 +1,10 @@
-﻿using Microsoft.Azure.Services.AppAuthentication;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HitachiQA.Helpers
@@ -45,9 +43,6 @@ namespace HitachiQA.Helpers
             TriggerTestSuiteExecution(TestPlanId, TestSuiteId, TCOutcome);
         }
 
-
-
-       
         private static void TriggerTestSuiteExecution(int testPlanId, int testSuiteId, Dictionary<int, int> TCOutcome)
         {
             var body = new JArray();
@@ -74,13 +69,10 @@ namespace HitachiQA.Helpers
                 }
             }
 
-
             Log.Debug("Test Suite " + testSuiteId);
             var url = $"https://dev.azure.com/{ORGANIZATION}/{PROJECT}/_apis/testplan/Plans/{testPlanId}/suites/{testSuiteId}/TestPoint?api-version=6.0-preview.2";
 
             RestAPI.PATCH(url, body, authenticationHeader);
-
-
         }
        
         private static Dictionary<int, List<int>> getTestPointIds(int planId, int suiteId, IEnumerable<int> testCaseIds)
@@ -113,8 +105,7 @@ namespace HitachiQA.Helpers
                             unknownMatches.Add((int)testPoint.testCaseReference.id, new List<int>());
                         }
                         unknownMatches[(int)testPoint.testCaseReference.id].Add((int)testPoint.id);
-                    }
-                    
+                    }  
                 }
             }
 
@@ -128,7 +119,6 @@ namespace HitachiQA.Helpers
                     }
                 }
            }
-
             return result;
         }
 
@@ -144,8 +134,6 @@ namespace HitachiQA.Helpers
 
         private static AuthenticationHeaderValue loadPAT()
         {
-          
-
             String filepath = Path.Combine(Driver.Setup.SourceDir, "SessionToken.temp");
             if (File.Exists(filepath))
             {
@@ -163,10 +151,8 @@ namespace HitachiQA.Helpers
             }
             else
             {
-
                 return null;
             }
-
         }
     }
 }
