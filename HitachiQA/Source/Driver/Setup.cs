@@ -10,7 +10,6 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Linq;
 using OpenQA.Selenium.Edge;
 
 namespace HitachiQA.Driver
@@ -21,7 +20,7 @@ namespace HitachiQA.Driver
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver = null;
         public static IWebDriver driverTemp;
-        public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir") ?? "../" ;
+        public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir/../net6.0/") ?? "";
         public static Dictionary<int, int> TestCaseOutcome = new Dictionary<int, int> ();
         public static bool isNoBrowserFeature = false;
 

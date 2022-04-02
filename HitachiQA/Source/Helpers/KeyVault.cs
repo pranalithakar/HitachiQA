@@ -22,7 +22,7 @@ namespace HitachiQA.Helpers
             String secret = null;
 
 
-            // TODO:
+             //TODO:
             //using (var keyVaultClient = new SecretClient(new SecretClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback)))
             {
                 try
