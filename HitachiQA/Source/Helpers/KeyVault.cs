@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using Azure.Core;
-using Microsoft.Azure.Services.AppAuthentication;
-using Microsoft.Azure.KeyVault;
-using Azure.Security.KeyVault.Secrets;
+﻿using Microsoft.Azure.Services.AppAuthentication;
 
 namespace HitachiQA.Helpers
 {
@@ -28,12 +20,12 @@ namespace HitachiQA.Helpers
             String secret = null;
 
 
-            using (var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback)))
+            //using (var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback)))
             {
                 try
                 {
-                    var secretBundle = keyVaultClient.GetSecretAsync(this.KEY_VAULT_URI, secretName).Result;
-                    secret = secretBundle.Value;
+                    //var secretBundle = keyVaultClient.GetSecretAsync(this.KEY_VAULT_URI, secretName).Result;
+                    //secret = secretBundle.Value;
                 }
                 catch(Exception ex)
                 {

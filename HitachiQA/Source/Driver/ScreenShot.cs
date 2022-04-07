@@ -12,17 +12,17 @@ namespace HitachiQA
 {
     public class ScreenShot
     {
-        public static void Info(String filename = null) => Take(Severity.INFO, filename!);
-        public static void Debug(String filename = null) => Take(Severity.DEBUG, filename!);
-        public static void Warn(String filename = null) => Take(Severity.WARN, filename!);
-        public static void Error(String filename = null) => Take(Severity.ERROR, filename!);
-        public static void Critical(String filename = null) => Take(Severity.CRITICAL, filename!);
+        public static void Info(String? filename = null) => Take(Severity.INFO, filename!);
+        public static void Debug(String? filename = null) => Take(Severity.DEBUG, filename!);
+        public static void Warn(String? filename = null) => Take(Severity.WARN, filename!);
+        public static void Error(String? filename = null) => Take(Severity.ERROR, filename!);
+        public static void Critical(String? filename = null) => Take(Severity.CRITICAL, filename!);
 
 
         /// <summary>
         /// Take screenshot, by defualt the filename will be Severity_CurrentScenario_currentDateTime unless otherwise specified
         /// </summary>
-        public static void Take(Severity severity, String filename =null)
+        public static void Take(Severity severity, String? filename =null)
         {
 
             var currentSev = Severity.parseLevel(Environment.GetEnvironmentVariable("CURRENT_SEVERITY_LEVEL")).Level;

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using BoDi;
+﻿using BoDi;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
-using Microsoft.Edge.SeleniumTools;
 using TechTalk.SpecFlow;
 using HitachiQA.Helpers;
-using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Linq;
-
+using OpenQA.Selenium.Edge;
 
 namespace HitachiQA.Driver
 {
@@ -22,7 +17,7 @@ namespace HitachiQA.Driver
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver = null;
         public static IWebDriver driverTemp;
-        public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir") ?? "../" ;
+        public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir") ?? "./" ;
         public static Dictionary<int, int> TestCaseOutcome = new Dictionary<int, int> ();
         public static bool isNoBrowserFeature = false;
 
@@ -59,7 +54,6 @@ namespace HitachiQA.Driver
                 case "edge":
                     string locations = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                     EdgeOptions edgeOptions = new EdgeOptions();
-                    edgeOptions.UseChromium = true;
                     driver = new EdgeDriver(locations, edgeOptions);
                     break;
 
@@ -196,7 +190,7 @@ namespace HitachiQA.Driver
                 driver.Close();
                 driver.Quit();
             }
-            Cosmos.client.Dispose();
+            //Cosmos.client.Dispose();
         }
 
         private static void invokeEnvironmentVariables(string JsonEnvironmentFileName )
