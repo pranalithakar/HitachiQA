@@ -8,5 +8,3 @@ Scenario: User is able to create new Vendor
 	And user continues to enter General Info
 	And user enters vender Address Info
 	Then user successfully saves new Vendor
-
-

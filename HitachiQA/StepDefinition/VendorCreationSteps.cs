@@ -18,13 +18,15 @@ namespace HitachiQA.StepDefinition.F_OSteps
         public void GivenUserNavigatesToDashobard()
         {
             UserActions.Navigate(Environment.GetEnvironmentVariable("HOST"));
-            var button = SharedObjects.GetButton("Advanced");
-            if(button.assertElementIsPresent(2, true) == true)
-            {
-                button.Click();
-                SharedObjects.ConnectionContinueButton.Click();
-            }
-            SharedObjects.DashboardTitle.assertElementIsPresent();
+            string username = Environment.GetEnvironmentVariable("USER_NAME");
+            string password = Environment.GetEnvironmentVariable("PASSWORD");
+            string decUser = Functions.DecryptString(username);
+            string decPass = Functions.DecryptString(password);
+            SharedObjects.GetTextField("email").setText(decUser);
+            SharedObjects.GetButton("Next").Click();
+            SharedObjects.GetTextField("password").setText(decPass);
+            SharedObjects.GetButton("Sign in").Click();
+            SharedObjects.GetButton("No").Click();
         }
 
         [Given(@"user continues to enter new Vendor section")]

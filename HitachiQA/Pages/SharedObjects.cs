@@ -9,7 +9,7 @@ namespace HitachiQA.Pages
     {
         public static Element AdvancedButton => new Element("//*[@id='details-button']");
         public static Element ConnectionContinueButton => new Element("//*[@id='proceed-link']");
-        public static Element DashboardTitle => new Element("//*[contains(text(), 'Constose Entertainmenet System')]");
+        //public static Element DashboardTitle => new Element("//*[contains(text(), 'Constose Entertainmenet System')]");
 
         // Top Navigation
 
@@ -27,6 +27,7 @@ namespace HitachiQA.Pages
         public static Element GetButton(string DisplayName)
         {
             return new Element($"//button[contains(text(), '{DisplayName}')] |" +
+                                $"//input[@value='{DisplayName}'] |" +
                                $"//button[@data-dyn-controlname='{DisplayName}'][descendant::*[text() = 'Add']] |" +
                               $"//*[@aria-label='{DisplayName}']");
         }
@@ -44,6 +45,7 @@ namespace HitachiQA.Pages
         public static Element GetTextField(string LabelName)
         {
             return new Element($"//input[preceding-sibling::label[contains(text(), '{LabelName}')]] |" +
+                               $"//input[@type='{LabelName}'] |" + 
                                $"//input[@name='{LabelName}']");
         }
 
