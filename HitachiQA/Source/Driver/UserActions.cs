@@ -336,7 +336,8 @@ namespace HitachiQA.Driver
         public static void selectDropdownOptionByText(By DropdownLocator, string optionDisplayText)
         {
             Click(DropdownLocator);
-            Click(By.XPath($"//*[contains(text(), '{optionDisplayText}') and @role='option']"));
+            Click(By.XPath($"//*[contains(text(), '{optionDisplayText}') and @role='option'] |" +
+                           $"//input[@value='{optionDisplayText}']"));
         }
 
         //

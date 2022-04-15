@@ -5,6 +5,7 @@ using HitachiQA.Pages;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace HitachiQA.StepDefinition.F_OSteps
@@ -45,13 +46,17 @@ namespace HitachiQA.StepDefinition.F_OSteps
         [Given(@"user continues to enter General Info")]
         public void GivenUserContinuesToEnterGeneralInfo()
         {
+            Thread.Sleep(800);
             SharedObjects.NewButton.Click();
             string uniqueID = Functions.GetRandomInteger().ToString();
-            SharedObjects.GetTextField("Vendor account").setText("autoVendor" + uniqueID);
-            SharedObjects.GetTextField("Name").setText("autoVendor" + uniqueID);
             SharedObjects.GetDropdown("Type").SelectDropdownOptionByText("Person");
-            SharedObjects.GetDropdown("Group").SelectDropdownOptionByText("One-time vendors");
-
+            SharedObjects.GetDropdown("Group").setText("one");
+            SharedObjects.GetUniqueElement("One-time vendors").Click();
+            SharedObjects.GetTextField("Identification_AccountNum").setText("autoVendor" + uniqueID);
+            SharedObjects.GetTextField("Vendor account").setText("autoVendor" + uniqueID);
+            SharedObjects.GetTextField("Name_FirstName").setText("TheFirst");
+            SharedObjects.GetTextField("Name_MiddleName").setText("TheSecond");
+            SharedObjects.GetTextField("Name_LastName").setText("TheLast");
         }
 
         [Given(@"user enters vender Address Info")]

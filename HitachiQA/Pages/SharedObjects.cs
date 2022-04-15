@@ -51,12 +51,18 @@ namespace HitachiQA.Pages
 
         public static Element GetDropdown(string DropdownName)
         {
-            return new Element($"//input[@name='{DropdownName}']");
+            return new Element($"//input[@name='{DropdownName}'] |" +
+                               $"//input[@role='textbox' and @id='vendtablelistpage_3_Posting_VendGroup_input'][preceding-sibling::label[contains(text(), '{DropdownName}')]]");
         }
 
         public static Element GetTabSection(string SectionName)
         {
             return new Element($"//*[@role='tab'][descendant::*[text() = '{SectionName}']]");
+        }
+
+        public static Element GetUniqueElement(string element)
+        {
+            return new Element($"//input[@value='{element}']");
         }
     }
 }
