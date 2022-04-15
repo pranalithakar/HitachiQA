@@ -1,10 +1,8 @@
-﻿using HitachiQA.Data.Entity;
-using HitachiQA.Driver;
+﻿using HitachiQA.Driver;
 using HitachiQA.Helpers;
 using HitachiQA.Pages;
+using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using TechTalk.SpecFlow;
 
@@ -13,7 +11,10 @@ namespace HitachiQA.StepDefinition.F_OSteps
     [Binding]
     public class VendorCreationSteps
     {
-        public Address Address;
+        private string VendorName;
+        private string VendorFirst;
+        private string VendorMiddle;
+        private string VendorLast;
 
         [Given(@"user navigates to dashobard")]
         public void GivenUserNavigatesToDashobard()
@@ -39,50 +40,42 @@ namespace HitachiQA.StepDefinition.F_OSteps
             if(expanded != "true")
             {
                 SharedObjects.GetButton("Vendors").Click();
+                Thread.Sleep(200);
             }
             SharedObjects.GetButton("All vendors").Click();
+            Thread.Sleep(200);
+            ScreenShot.Info();
         }
 
-        [Given(@"user continues to enter General Info")]
-        public void GivenUserContinuesToEnterGeneralInfo()
+        [When(@"user continues to enter General Info")]
+        public void WhenUserContinuesToEnterGeneralInfo()
         {
-            Thread.Sleep(800);
+            Thread.Sleep(1100);
             SharedObjects.NewButton.Click();
+            Thread.Sleep(1100);
             string uniqueID = Functions.GetRandomInteger().ToString();
-            SharedObjects.GetDropdown("Type").SelectDropdownOptionByText("Person");
-            SharedObjects.GetDropdown("Group").setText("one");
-            SharedObjects.GetUniqueElement("One-time vendors").Click();
-            SharedObjects.GetTextField("Identification_AccountNum").setText("autoVendor" + uniqueID);
-            SharedObjects.GetTextField("Vendor account").setText("autoVendor" + uniqueID);
-            SharedObjects.GetTextField("Name_FirstName").setText("TheFirst");
-            SharedObjects.GetTextField("Name_MiddleName").setText("TheSecond");
-            SharedObjects.GetTextField("Name_LastName").setText("TheLast");
-        }
+            VendorName = "autoVendor" + uniqueID;
+            VendorFirst = "TheFirst";
+            VendorMiddle = "TheSecond";
+            VendorLast = "TheLast";
 
-        [Given(@"user enters vender Address Info")]
-        public void GivenUserEntersVenderAddressInfo()
-        {
-            Dictionary<string, string> inputs = Address.AddressInputs;
-            SharedObjects.GetTabSection("Addresses").Click();
-            SharedObjects.GetButton("NewAddress").Click();
-            foreach(var entry in inputs)
-            {
-                try
-                {
-                    SharedObjects.GetTextField(entry.Key).setText(entry.Value);
-                }
-                catch
-                {
-                    SharedObjects.GetDropdown(entry.Key).SelectDropdownOptionByText(entry.Value);
-                }
-            }
+            SharedObjects.GetDropdown("Type").SelectDropdownOptionByText("Person");
+            SharedObjects.GetDropdown("Group").setText("ONE");
+            SharedObjects.GetTextField("Vendor account").setText(VendorName +  Keys.Tab);
+            SharedObjects.GetTextField("Name_FirstName").setText(VendorFirst + Keys.Tab);
+            SharedObjects.GetTextField("Name_MiddleName").setText(VendorMiddle + Keys.Tab);
+            SharedObjects.GetTextField("Name_LastName").setText(VendorLast);
+            ScreenShot.Info();
         }
 
 
         [Then(@"user successfully saves new Vendor")]
         public void ThenUserSuccessfullySavesNewVendor()
         {
-            
+            SharedObjects.FormSaveButton.Click();
+            SharedObjects.SavedVendor.WaitUntilClickable();
+            SharedObjects.SavedVendor.assertElementInnerTextEquals($"{VendorName} : {VendorFirst} {VendorMiddle} {VendorLast}");
+            ScreenShot.Info();
         }
     }
 }

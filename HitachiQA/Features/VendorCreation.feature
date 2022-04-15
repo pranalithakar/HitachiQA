@@ -5,6 +5,5 @@
 Scenario: User is able to create new Vendor
 	Given user navigates to dashobard
 	And user continues to enter new Vendor section
-	And user continues to enter General Info
-	And user enters vender Address Info
+	When user continues to enter General Info
 	Then user successfully saves new Vendor

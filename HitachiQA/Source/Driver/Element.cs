@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using OpenQA.Selenium;
 using HitachiQA.Helpers;
 using System.Linq;
-using System.Xml.Serialization;
-using OpenQA.Selenium.Support.UI;
-using System.Threading;
-using NUnit.Framework.Constraints;
 
 namespace HitachiQA.Driver
 {

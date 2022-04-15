@@ -1,19 +1,13 @@
 ﻿using HitachiQA.Driver;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HitachiQA.Pages
 {
     public class SharedObjects
-    {
-        public static Element AdvancedButton => new Element("//*[@id='details-button']");
-        public static Element ConnectionContinueButton => new Element("//*[@id='proceed-link']");
-        //public static Element DashboardTitle => new Element("//*[contains(text(), 'Constose Entertainmenet System')]");
-
+    {    
         // Top Navigation
 
         public static Element NewButton => new Element("//button[@name='SystemDefinedNewButton']");
+        public static Element FormSaveButton => new Element("(//button[descendant::*[contains(text(), 'Save')]])[1]");
 
         // left Navigation
 
@@ -21,6 +15,12 @@ namespace HitachiQA.Pages
         public static Element WorkSpaceGroupButton => new Element("//*[@id='navPaneWorkSpaceGroupID']");
         public static Element RecentsButton => new Element("//*[@id='navPaneRecentsID']");
         public static Element FavoritesButton => new Element("//*[@id='navPaneFavoritesID']");
+
+        // Important Object - titles, headers, etc
+
+        public static Element SavedVendor => new Element("//span[@id='vendtablelistpage_3_HeaderTitle']");
+
+
 
 
 

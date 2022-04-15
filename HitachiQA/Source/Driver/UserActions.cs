@@ -16,6 +16,7 @@ namespace HitachiQA.Driver
 
         //Most applications have some sort of loading screen, please allow this variable to hold the that locator. please set this xpath in your .env.json file
         private static readonly String LOADING_SCREEN_XPATH = Environment.GetEnvironmentVariable("LOADING_SCREEN_XPATH");
+
         public static void waitForPageLoad()
         {
             if(LOADING_SCREEN_XPATH != null)
