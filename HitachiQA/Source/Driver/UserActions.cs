@@ -35,14 +35,12 @@ namespace HitachiQA.Driver
             }
         }
   
-
         public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             var URL = Functions.ParseURL(URL_OR_PATH, parameters);
             Log.Info("Navigate to: " + URL);
 
-            Navigate(URL);
-            
+            Navigate(URL);   
         }
         
         public static void Navigate(string URL_OR_PATH)
@@ -51,7 +49,6 @@ namespace HitachiQA.Driver
             Log.Info("Navigate to: " + URL);
            
             Setup.driver.Navigate().GoToUrl(URL);
-            
         }
 
         public static string GetCurrentURL()
@@ -253,6 +250,16 @@ namespace HitachiQA.Driver
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
 
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(by));            
+        }
+
+        public static bool WaitUntilElementContainsText(By by, string text, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        {
+            WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
+            bool target;
+
+            target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TextToBePresentInElementLocated(by, text));
+
+            return target;
         }
 
         //

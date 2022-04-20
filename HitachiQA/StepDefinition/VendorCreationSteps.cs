@@ -72,9 +72,15 @@ namespace HitachiQA.StepDefinition.F_OSteps
         [Then(@"user successfully saves new Vendor")]
         public void ThenUserSuccessfullySavesNewVendor()
         {
+            string newVendorTitle = $"{VendorName} : {VendorFirst} {VendorMiddle} {VendorLast}";
+            bool TitleExists = true;
             SharedObjects.FormSaveButton.Click();
-            SharedObjects.SavedVendor.WaitUntilClickable();
-            SharedObjects.SavedVendor.assertElementInnerTextEquals($"{VendorName} : {VendorFirst} {VendorMiddle} {VendorLast}");
+            do
+            {
+              SharedObjects.SavedVendor.WaitUntilElementContainsText(newVendorTitle);
+
+            } while (!TitleExists);
+            SharedObjects.SavedVendor.assertElementInnerTextEquals(newVendorTitle);
             ScreenShot.Info();
         }
     }

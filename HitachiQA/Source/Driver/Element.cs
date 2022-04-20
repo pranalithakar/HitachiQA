@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using OpenQA.Selenium;
 using HitachiQA.Helpers;
 using System.Linq;
+using OpenQA.Selenium.Support.UI;
 
 namespace HitachiQA.Driver
 {
@@ -193,6 +194,11 @@ namespace HitachiQA.Driver
         public IWebElement WaitUntilClickable(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
         {
             return UserActions.FindElementWaitUntilClickable(locator, wait_Seconds);
+        }
+
+        public bool WaitUntilElementContainsText(string elementText)
+        {
+            return UserActions.WaitUntilElementContainsText(locator, elementText);
         }
 
         public void setValue(string fieldType, string value)
