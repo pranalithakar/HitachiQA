@@ -7,3 +7,4 @@ Scenario: User is able to create new Vendor
 	And user continues to enter new Vendor section
 	When user continues to enter General Info
 	Then user successfully saves new Vendor
+	
