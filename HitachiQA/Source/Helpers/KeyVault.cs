@@ -26,7 +26,7 @@ namespace HitachiQA.Helpers
                     var secretBundle = new SecretClient(new Uri(Environment.GetEnvironmentVariable("APP_KEYVAULT_URI")), new DefaultAzureCredential());
                     theSecret = secretBundle.GetSecret(secretName);
 
-                    value = theSecret.Value;  
+                    value = theSecret.Name;  
                 }
                 catch (Exception ex)
                 {       
