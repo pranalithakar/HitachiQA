@@ -1,5 +1,6 @@
 ﻿using System;
-using Microsoft.Azure.Services.AppAuthentication;
+using Azure.Core;
+using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 
 namespace HitachiQA.Helpers
@@ -13,38 +14,34 @@ namespace HitachiQA.Helpers
         }
         public String GetSecret(string secretName, bool optional)
         {
+            KeyVaultSecret theSecret;
+            String value;
             if(String.IsNullOrWhiteSpace(KEY_VAULT_URI))
             {
                 Functions.handleFailure(new ArgumentNullException("Helpers.KeyVault - KEY_VAULT_URI was not set properly"));
             }
-            AzureServiceTokenProvider azureServiceTokenProvider = new AzureServiceTokenProvider();
 
-            String secret = null;
-
-
-             //TODO:
-            //using (var keyVaultClient = new SecretClient(new SecretClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback)))
-            {
                 try
                 {
-                    //var secretBundle = keyVaultClient.GetSecretAsync(this.KEY_VAULT_URI, secretName).Result;
-                    //secret = secretBundle.Value;
+                    var secretBundle = new SecretClient(new Uri(Environment.GetEnvironmentVariable("APP_KEYVAULT_URI")), new DefaultAzureCredential());
+                    theSecret = secretBundle.GetSecret(secretName);
+
+                    value = theSecret.Value;  
                 }
-                catch(Exception ex)
-                {
+                catch (Exception ex)
+                {       
                     if (optional)
                     {
                         return null;
                     }
                     else
                     {
-                        Functions.handleFailure("Error while retrieving secrets from azure KeyVault", ex);
-                    } 
+                        value = Functions.handleFailure("Error while retrieving secrets from azure KeyVault", ex).ToString();
+                    }
                 }
-            }
-
-            return secret ?? throw new Exception("Keyvault.GetSecret returned null");
+            return value;
         }
+
         public String GetSecret(string secretName)
         {
             return GetSecret(secretName, false);
