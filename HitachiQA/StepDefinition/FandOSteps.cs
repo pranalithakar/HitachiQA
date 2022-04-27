@@ -3,13 +3,14 @@ using HitachiQA.Helpers;
 using HitachiQA.Pages;
 using OpenQA.Selenium;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using TechTalk.SpecFlow;
 
-namespace HitachiQA.StepDefinition.F_OSteps
+namespace HitachiQA.StepDefinition
 {
     [Binding]
-    public class VendorCreationSteps
+    public class FandOSteps
     {
         private string VendorName;
         private string VendorFirst;
@@ -30,6 +31,10 @@ namespace HitachiQA.StepDefinition.F_OSteps
             SharedObjects.GetButton("Sign in").Click();
             SharedObjects.GetButton("No").Click();
         }
+
+        //
+        // Vendor creation
+        //
 
         [Given(@"user continues to enter new Vendor section")]
         public void GivenUserContinuesToEnterNewVendorSection()
@@ -83,5 +88,25 @@ namespace HitachiQA.StepDefinition.F_OSteps
             SharedObjects.SavedVendor.assertElementInnerTextEquals(newVendorTitle);
             ScreenShot.Info();
         }
+
+        //
+        // Sales Order
+        //
+
+        [Given(@"user launches '([^']*)' sales order batch script")]
+        public void GivenUserLaunchesSalesOrderBatchScript(string batchFileName)
+        {
+            if(batchFileName.ToLower() == "confirm" | batchFileName.ToLower() == "create")
+            {
+                LaunchSalesOrderBatch(batchFileName);
+            }
+            else { throw new Exception($"Batch file {batchFileName} is not recognized"); }
+        }
+
+        public void LaunchSalesOrderBatch(string filename)
+        {
+            Process.Start("c:\\batchfilename.bat");
+        }
+
     }
 }
