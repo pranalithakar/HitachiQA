@@ -1,6 +1,7 @@
 ﻿using HitachiQA.Driver;
 using HitachiQA.Helpers;
 using HitachiQA.Pages;
+using HitachiQA.Source.Helpers;
 using OpenQA.Selenium;
 using System;
 using System.Diagnostics;
@@ -96,17 +97,19 @@ namespace HitachiQA.StepDefinition
         [Given(@"user launches '([^']*)' sales order batch script")]
         public void GivenUserLaunchesSalesOrderBatchScript(string batchFileName)
         {
-            if(batchFileName.ToLower() == "confirm" | batchFileName.ToLower() == "create")
+            switch (batchFileName.ToLower())
             {
-                LaunchSalesOrderBatch(batchFileName);
+                case "create":
+                    batchFileName = "CreateSO";
+                    BatchRunner.ExecuteBatchFile(batchFileName);
+                    break;
+                case "confirm":
+                    batchFileName = "ConfirmSO";
+                    BatchRunner.ExecuteBatchFile(batchFileName);
+                    break;
+
+                default: { throw new Exception($"Batch file {batchFileName} is not a recognized sales order batch script"); }
             }
-            else { throw new Exception($"Batch file {batchFileName} is not recognized"); }
         }
-
-        public void LaunchSalesOrderBatch(string filename)
-        {
-            Process.Start("c:\\batchfilename.bat");
-        }
-
     }
 }

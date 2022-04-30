@@ -34,54 +34,31 @@ namespace HitachiQA.Driver
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? Environment.GetEnvironmentVariable("ENVIRONMENT_FILE", EnvironmentVariableTarget.User) ?? "default.env.json");
-
-            
+            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? Environment.GetEnvironmentVariable("ENVIRONMENT_FILE", EnvironmentVariableTarget.User) ?? "default.env.json");  
         }
-        public static void invokeNewDriver()
+
+        [BeforeFeature]
+        public static void BeforeFeature(FeatureContext featureContext)
         {
-          
-            string browser = Environment.GetEnvironmentVariable("BROWSER", EnvironmentVariableTarget.Process);
-            switch (browser?.ToLower())
+            if (!featureContext.FeatureInfo.Tags.Contains("NoBrowser"))
             {
-                case "chrome":
-
-                    var options = new ChromeOptions();
-                    options.AddArgument("--window-size=1920,1080");
-                    driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), options);
-                    break;
-
-                case "firefox":
-                    driver = new FirefoxDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                    break;
-
-                case "edge":
-                    string locations = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                    EdgeOptions edgeOptions = new EdgeOptions();
-                    edgeOptions.AddArgument("inprivate");
-                    driver = new EdgeDriver(locations, edgeOptions);
-                    break;
-
-                default:
-                    throw new NotImplementedException($"Environment variable BROWSER value={browser} is not supported");
+                isNoBrowserFeature = false;
+                if (driver == null)
+                {
+                    invokeNewDriver();
+                }
             }
-            driver.Manage().Window.Maximize();
-
+            else
+            {
+                isNoBrowserFeature = true;
+            }
         }
-
 
         [BeforeScenario("newWindow", Order =1)]
         public static void pre_NewWindow()
         {
             driverTemp = driver;
             invokeNewDriver();
-        }
-        [AfterScenario("newWindow", Order=1)]
-        public static void post_NewWindow()
-        {
-            driver.Close();
-            driver.Quit();
-            driver = driverTemp;
         }
 
         [BeforeScenario]
@@ -91,6 +68,15 @@ namespace HitachiQA.Driver
             {
                 _objectContainer.RegisterInstanceAs(driver);
             }
+        }
+
+
+        [AfterScenario("newWindow", Order=1)]
+        public static void post_NewWindow()
+        {
+            driver.Close();
+            driver.Quit();
+            driver = driverTemp;
         }
 
         [AfterScenario]
@@ -133,7 +119,6 @@ namespace HitachiQA.Driver
                     {
                         TestCaseOutcome.Add(testCaseId, Devops.OUTCOME_FAIL);
                     }
-                   
                 }
 
             }
@@ -152,26 +137,8 @@ namespace HitachiQA.Driver
                     }
                 }
             }
-
-
         }
-        [BeforeFeature]
-        public static void BeforeFeature(FeatureContext featureContext)
-        {
-            if(!featureContext.FeatureInfo.Tags.Contains("NoBrowser"))
-            {
-                isNoBrowserFeature = false;
-                if (driver == null)
-                {
-                    invokeNewDriver();
-                }
-            }
-            else
-            {
-                isNoBrowserFeature = true;
-            }
 
-        }
         [AfterFeature]
         public static void AfterFeature()
         {
@@ -196,6 +163,35 @@ namespace HitachiQA.Driver
                 driver.Quit();
             }
             //Cosmos.client.Dispose();
+        }
+
+        public static void invokeNewDriver()
+        {
+            string browser = Environment.GetEnvironmentVariable("BROWSER", EnvironmentVariableTarget.Process);
+            switch (browser?.ToLower())
+            {
+                case "chrome":
+
+                    var options = new ChromeOptions();
+                    options.AddArgument("--window-size=1920,1080");
+                    driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), options);
+                    break;
+
+                case "firefox":
+                    driver = new FirefoxDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                    break;
+
+                case "edge":
+                    string locations = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    edgeOptions.AddArgument("inprivate");
+                    driver = new EdgeDriver(locations, edgeOptions);
+                    break;
+
+                default:
+                    throw new NotImplementedException($"Environment variable BROWSER value={browser} is not supported");
+            }
+            driver.Manage().Window.Maximize();
         }
 
         private static void invokeEnvironmentVariables(string JsonEnvironmentFileName )
@@ -238,10 +234,7 @@ namespace HitachiQA.Driver
                         Environment.SetEnvironmentVariable(secretName, appKeyVault.GetSecret(secretName));
                     }
                 }
-                
             }
-
-
         }
     }
 }

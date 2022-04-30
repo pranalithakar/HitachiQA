@@ -1,4 +1,5 @@
-﻿Feature: F&O
+﻿@NoBrowser
+Feature: F&O
 	This feature tests F&O - Vendor creation, 
 	sales orders and purchase orders
 
@@ -11,3 +12,4 @@ Scenario: User is able to create new Vendor
 
 Scenario: User uploads attachment to sales order
 	Given user launches 'create' sales order batch script
+
