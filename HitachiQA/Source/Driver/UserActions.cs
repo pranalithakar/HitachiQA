@@ -288,6 +288,8 @@ namespace HitachiQA.Driver
             textField.SendKeys(Keys.Delete);
         }
 
+
+
         // 
         // Dropdown actions 
         // 

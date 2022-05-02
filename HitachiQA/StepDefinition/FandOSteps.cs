@@ -91,7 +91,7 @@ namespace HitachiQA.StepDefinition
         }
 
         //
-        // Sales Order
+        // Batch
         //
 
         [Given(@"user launches '([^']*)' sales order batch script")]
@@ -111,5 +111,23 @@ namespace HitachiQA.StepDefinition
                 default: { throw new Exception($"Batch file {batchFileName} is not a recognized sales order batch script"); }
             }
         }
+
+        //
+        // Sales Order
+        //
+
+        [Given(@"user continues to sales order list")]
+        public void GivenUserContinuesToSalesOrderList()
+        {
+            SharedObjects.ModulesButton.Click();
+            SharedObjects.GetModulesListItem("Sales and marketing").Click();
+            SharedObjects.GetButton("All sales orders").Click();
+            var link = SharedObjects.LastListedSalesOrder.GetAttribute("value");
+            SharedObjects.LastListedSalesOrder.ClickLinkText(link);
+
+            UserActions.waitForPageLoad();
+
+        }
+
     }
 }

@@ -24,6 +24,8 @@ namespace HitachiQA.Pages
 
 
 
+        public static Element LastListedSalesOrder => new Element("(//*[@id='SalesTable_SalesIdAdvanced_151_0'] //input[@aria-label='Sales order'])[last()]");
+
         public static Element GetButton(string DisplayName)
         {
             return new Element($"//button[contains(text(), '{DisplayName}')] |" +
