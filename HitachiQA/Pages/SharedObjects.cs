@@ -8,6 +8,7 @@ namespace HitachiQA.Pages
 
         public static Element NewButton => new Element("//button[@name='SystemDefinedNewButton']");
         public static Element FormSaveButton => new Element("(//button[descendant::*[contains(text(), 'Save')]])[1]");
+        public static Element SystemSaveButton => new Element("//button[@name='SystemDefinedSaveButton']");
 
         // left Navigation
 
@@ -19,7 +20,7 @@ namespace HitachiQA.Pages
         // Important Object - titles, headers, etc
 
         public static Element SavedVendor => new Element("//span[@id='vendtablelistpage_3_HeaderTitle']");
-
+        public static Element AttachmentsButton => new Element("(//button[@name='SystemDefinedAttachButton'])[2]");
 
 
 
@@ -31,7 +32,9 @@ namespace HitachiQA.Pages
             return new Element($"//button[contains(text(), '{DisplayName}')] |" +
                                 $"//input[@value='{DisplayName}'] |" +
                                $"//button[@data-dyn-controlname='{DisplayName}'][descendant::*[text() = 'Add']] |" +
-                              $"//*[@aria-label='{DisplayName}']");
+                              $"//*[@aria-label='{DisplayName}'] |" +
+                              $"//button[descendant::*[contains(text(), '{DisplayName}')]] |" +
+                              $"//button[@name='{DisplayName}']");
         }
 
         public static Element GetWorkSpace(string SpaceName)

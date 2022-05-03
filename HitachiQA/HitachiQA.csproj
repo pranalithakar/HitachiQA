@@ -5,6 +5,18 @@
 	<PublishChromeDriver>true</PublishChromeDriver>
   </PropertyGroup>
 
+  <ItemGroup>
+    <COMReference Include="AutoItX3Lib">
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>f8937e53-d444-4e71-9275-35b64210cc3b</Guid>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.24.0" />
 		<PackageReference Include="Azure.Identity" Version="1.6.0" />
@@ -35,6 +47,16 @@
 	  <None Update="qa1.env.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Data\Uploads\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="AutoItX3.Assembly">
+	    <HintPath>..\..\..\..\..\..\..\Program Files (x86)\AutoIt3\AutoItX\AutoItX3.Assembly.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

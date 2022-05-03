@@ -10,9 +10,10 @@ Scenario: User is able to create new Vendor
 	Then user successfully saves new Vendor
 
 Scenario: User uploads attachment to sales order
-#	Given user launches 'create' sales order batch script
-	And user navigates to dashobard
+	Given user launches 'create' sales order batch script
+	And user navigates to dashobard 
 	And user continues to sales order list
-	# maybe one or two more steps
-	Then user launches 'confirm' sales order batch script
+	And user selects Sales Order to upload attachment
+	When user saves attachment 
+	Then user launches 'confirm' to verify upload successful
 

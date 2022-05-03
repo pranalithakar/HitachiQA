@@ -112,6 +112,81 @@ namespace HitachiQA.Driver
 
             return true;
         }
+
+        public static bool DoubleClick(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
+        {
+            Actions Action = new Actions(Setup.driver);
+            try
+            {
+                try
+                {
+                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    Action.DoubleClick(element).Build().Perform();
+                }
+                catch (StaleElementReferenceException)
+                {
+                    Thread.Sleep(1000);
+                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    Action.DoubleClick(element).Build().Perform();
+
+                }
+                catch (ElementClickInterceptedException)
+                {
+                    waitForPageLoad();
+
+                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    Action.DoubleClick(element).Build().Perform();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
+                return false;
+            }
+            return true;
+        }
+
+        public static bool RightClick(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
+        {
+            Actions Action = new Actions(Setup.driver);
+            try
+            {
+                try
+                {
+                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    Action.ContextClick(element).Build().Perform();
+                }
+                catch (StaleElementReferenceException)
+                {
+                    Thread.Sleep(1000);
+                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    Action.ContextClick(element).Build().Perform();
+
+                }
+                catch (ElementClickInterceptedException)
+                {
+                    waitForPageLoad();
+
+                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    Action.ContextClick(element).Build().Perform();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                Functions.handleFailure($"Locator: {ElementLocator}", ex, optional);
+                return false;
+            }
+            return true;
+        }
+
         public static bool GetIsDisabled(By elementLocator)
         {
             var element = FindElementWaitUntilVisible(elementLocator);
@@ -245,6 +320,7 @@ namespace HitachiQA.Driver
 
             return target;
         }
+
         public static void WaitForElementToDisappear(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
         {
             WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));

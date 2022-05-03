@@ -4,15 +4,17 @@ using HitachiQA.Pages;
 using HitachiQA.Source.Helpers;
 using OpenQA.Selenium;
 using System;
-using System.Diagnostics;
-using System.Threading;
+using AutoItX3Lib;
 using TechTalk.SpecFlow;
+using System.Threading;
+using System.IO;
 
 namespace HitachiQA.StepDefinition
 {
     [Binding]
     public class FandOSteps
     {
+        private static void Wait() => UserActions.waitForPageLoad();
         private string VendorName;
         private string VendorFirst;
         private string VendorMiddle;
@@ -46,19 +48,17 @@ namespace HitachiQA.StepDefinition
             if(expanded != "true")
             {
                 SharedObjects.GetButton("Vendors").Click();
-                Thread.Sleep(200);
+                Wait();
             }
             SharedObjects.GetButton("All vendors").Click();
-            Thread.Sleep(200);
-            ScreenShot.Info();
+            Wait();
         }
 
         [When(@"user continues to enter General Info")]
         public void WhenUserContinuesToEnterGeneralInfo()
         {
-            Thread.Sleep(1100);
             SharedObjects.NewButton.Click();
-            Thread.Sleep(1100);
+            Wait();
             string uniqueID = Functions.GetRandomInteger().ToString();
             VendorName = "autoVendor" + uniqueID;
             VendorFirst = "TheFirst";
@@ -81,6 +81,7 @@ namespace HitachiQA.StepDefinition
             string newVendorTitle = $"{VendorName} : {VendorFirst} {VendorMiddle} {VendorLast}";
             bool TitleExists = true;
             SharedObjects.FormSaveButton.Click();
+            Wait();
             do
             {
               SharedObjects.SavedVendor.WaitUntilElementContainsText(newVendorTitle);
@@ -89,6 +90,44 @@ namespace HitachiQA.StepDefinition
             SharedObjects.SavedVendor.assertElementInnerTextEquals(newVendorTitle);
             ScreenShot.Info();
         }
+
+        //
+        // Sales Order
+        //
+
+        [Given(@"user continues to sales order list")]
+        public void GivenUserContinuesToSalesOrderList()
+        {
+            SharedObjects.ModulesButton.Click();
+            SharedObjects.GetModulesListItem("Sales and marketing").Click();
+            SharedObjects.GetButton("All sales orders").Click();
+        }
+
+        [Given(@"user selects Sales Order to upload attachment")]
+        public void GivenUserSelectsSalesOrderToUploadAttachment()
+        {
+            SharedObjects.LastListedSalesOrder.RightClick();
+            SharedObjects.GetButton("View details").Click();
+            Wait();
+            SharedObjects.AttachmentsButton.Click();
+            Wait();
+            SharedObjects.GetButton("ctrlAdd").Click();
+            SharedObjects.GetButton("DocumentType_File").Click();
+            UploadFileToAttachment();
+        }
+
+        [When(@"user saves attachment")]
+        public void WhenUserSavesAttachment()
+        {
+            SharedObjects.SystemSaveButton.Click();
+        }
+
+        [Then(@"user launches '([^']*)' to verify upload successful")]
+        public void ThenUserLaunchesToVerifyUploadSuccessful(string batchFileName)
+        {
+            GivenUserLaunchesSalesOrderBatchScript(batchFileName);
+        }
+
 
         //
         // Batch
@@ -112,22 +151,30 @@ namespace HitachiQA.StepDefinition
             }
         }
 
+
         //
-        // Sales Order
+        // File Upload
         //
 
-        [Given(@"user continues to sales order list")]
-        public void GivenUserContinuesToSalesOrderList()
+        // for Auto ITX3 to work - need to register dll
+        // by running command as admin "regsvr32 : C:\Program Files (x86)\AutoIt3\AutoItX\AutoItX3.dll
+        private static void UploadFileToAttachment()
         {
-            SharedObjects.ModulesButton.Click();
-            SharedObjects.GetModulesListItem("Sales and marketing").Click();
-            SharedObjects.GetButton("All sales orders").Click();
-            var link = SharedObjects.LastListedSalesOrder.GetAttribute("value");
-            SharedObjects.LastListedSalesOrder.ClickLinkText(link);
-
-            UserActions.waitForPageLoad();
-
+            SharedObjects.GetButton("UploadControlBrowseButton").Click();
+            AutoItX3 autoIT = new AutoItX3();
+            string path = GetUploadFile("UploadTest");
+            autoIT.WinActivate("Open");
+            autoIT.Send(path);
+            Thread.Sleep(3000);            
+            autoIT.Send("{ENTER}");
         }
 
+        private static string GetUploadFile(string FileName)
+        {
+            string startPath = Directory.GetCurrentDirectory();
+            string ProjectPath = startPath.Substring(0, 63);
+            string fileLocation = ProjectPath + $"\\Data\\Uploads\\{FileName}.txt";
+            return fileLocation;
+        }
     }
 }
