@@ -27,6 +27,7 @@ namespace HitachiQA.Pages
 
 
         public static Element UploadBrowseButton => new Element("//*[@data-dyn-controlname='UploadControl'] //button[descendant::*[contains(text(), 'Browse')]]");
+        public static Element UpLoadPopup => new Element("//*[@class='dialog-popup-content editMode Dialog fill-width fill-height layout-container layout-vertical']");
 
 
 

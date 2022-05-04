@@ -20,8 +20,9 @@ namespace HitachiQA.StepDefinition
         private string VendorMiddle;
         private string VendorLast;
 
-        [Given(@"user navigates to dashobard")]
-        public void GivenUserNavigatesToDashobard()
+
+        [Given(@"user navigates to dashboard")]
+        public void GivenUserNavigatesToDashboard()
         {
             UserActions.Navigate(Environment.GetEnvironmentVariable("HOST"));
             string username = Environment.GetEnvironmentVariable("USER_NAME");
@@ -99,6 +100,7 @@ namespace HitachiQA.StepDefinition
         public void GivenUserContinuesToSalesOrderList()
         {
             SharedObjects.ModulesButton.Click();
+            SharedObjects.GetModulesListItem("Sales and marketing").WaitUntilClickable(60);
             SharedObjects.GetModulesListItem("Sales and marketing").Click();
             SharedObjects.GetButton("All sales orders").Click();
         }
@@ -115,18 +117,21 @@ namespace HitachiQA.StepDefinition
             SharedObjects.GetButton("ctrlAdd").Click();
             SharedObjects.GetButton("DocumentType_File").Click();
             Thread.Sleep(700);
-            SharedObjects.UploadBrowseButton.WaitUntilClickable();
-            Thread.Sleep(700);
-            var uploadbutton = "document.getElementById(" + "DocumentUpload_7_UploadControlBrowseButton" + ");";
-            JSExecutor.execute($"{uploadbutton}.click();", uploadbutton);
-            //SharedObjects.UploadBrowseButton.TryClick();
-            Thread.Sleep(5000);
-            UploadFileToAttachment();
         }
 
         [When(@"user saves attachment")]
         public void WhenUserSavesAttachment()
         {
+            do
+            {
+                SharedObjects.UploadBrowseButton.WaitUntilClickable();
+                Thread.Sleep(700);
+                SharedObjects.UploadBrowseButton.Click();
+                Thread.Sleep(3000);
+                UploadFileToAttachment();
+                Thread.Sleep(500);
+            } while (SharedObjects.UpLoadPopup.assertElementNotPresent(3, true) == false);
+
             SharedObjects.SystemSaveButton.WaitUntilClickable();
             SharedObjects.SystemSaveButton.Click();
         }
@@ -172,7 +177,7 @@ namespace HitachiQA.StepDefinition
         
         {
             AutoItX3 autoIT = new AutoItX3();
-            autoIT.Sleep(5000);
+            autoIT.Sleep(3000);
             autoIT.ControlFocus("Open", "", "ComboBox1");
             autoIT.ControlSetText("Open", "", "Edit1", $"{path}");
             autoIT.ControlClick("Open", "", "Button1");
