@@ -23,6 +23,11 @@ namespace HitachiQA.Pages
         public static Element AttachmentsButton => new Element("(//button[@name='SystemDefinedAttachButton'])[2]");
 
 
+        // Popups
+
+
+        public static Element UploadBrowseButton => new Element("//*[@data-dyn-controlname='UploadControl'] //button[descendant::*[contains(text(), 'Browse')]]");
+
 
 
         public static Element LastListedSalesOrder => new Element("(//*[@id='SalesTable_SalesIdAdvanced_151_0'] //input[@aria-label='Sales order'])[last()]");

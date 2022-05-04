@@ -106,6 +106,7 @@ namespace HitachiQA.StepDefinition
         [Given(@"user selects Sales Order to upload attachment")]
         public void GivenUserSelectsSalesOrderToUploadAttachment()
         {
+            Thread.Sleep(500);
             SharedObjects.LastListedSalesOrder.RightClick();
             SharedObjects.GetButton("View details").Click();
             Wait();
@@ -113,12 +114,20 @@ namespace HitachiQA.StepDefinition
             Wait();
             SharedObjects.GetButton("ctrlAdd").Click();
             SharedObjects.GetButton("DocumentType_File").Click();
+            Thread.Sleep(700);
+            SharedObjects.UploadBrowseButton.WaitUntilClickable();
+            Thread.Sleep(700);
+            var uploadbutton = "document.getElementById(" + "DocumentUpload_7_UploadControlBrowseButton" + ");";
+            JSExecutor.execute($"{uploadbutton}.click();", uploadbutton);
+            //SharedObjects.UploadBrowseButton.TryClick();
+            Thread.Sleep(5000);
             UploadFileToAttachment();
         }
 
         [When(@"user saves attachment")]
         public void WhenUserSavesAttachment()
         {
+            SharedObjects.SystemSaveButton.WaitUntilClickable();
             SharedObjects.SystemSaveButton.Click();
         }
 
@@ -158,15 +167,15 @@ namespace HitachiQA.StepDefinition
 
         // for Auto ITX3 to work - need to register dll
         // by running command as admin "regsvr32 : C:\Program Files (x86)\AutoIt3\AutoItX\AutoItX3.dll
+        private static string path = GetUploadFile("UploadTest");
         private static void UploadFileToAttachment()
+        
         {
-            SharedObjects.GetButton("UploadControlBrowseButton").Click();
             AutoItX3 autoIT = new AutoItX3();
-            string path = GetUploadFile("UploadTest");
-            autoIT.WinActivate("Open");
-            autoIT.Send(path);
-            Thread.Sleep(3000);            
-            autoIT.Send("{ENTER}");
+            autoIT.Sleep(5000);
+            autoIT.ControlFocus("Open", "", "ComboBox1");
+            autoIT.ControlSetText("Open", "", "Edit1", $"{path}");
+            autoIT.ControlClick("Open", "", "Button1");
         }
 
         private static string GetUploadFile(string FileName)
