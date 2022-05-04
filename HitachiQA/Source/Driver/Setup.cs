@@ -43,6 +43,7 @@ namespace HitachiQA.Driver
                 case "chrome":
 
                     var options = new ChromeOptions();
+                    options.AddArgument("--incognito");
                     options.AddArgument("--window-size=1920,1080");
                     driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), options);
                     break;
