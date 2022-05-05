@@ -45,7 +45,7 @@ namespace HitachiQA.StepDefinition
         {
             SharedObjects.ModulesButton.Click();
             SharedObjects.GetModulesListItem("Procurement and sourcing").Click();
-            var expanded = SharedObjects.GetButton("Vendors").GetAttribute("aria-expanded");
+            string expanded = SharedObjects.GetButton("Vendors").GetAttribute("aria-expanded");
             if(expanded != "true")
             {
                 SharedObjects.GetButton("Vendors").Click();
@@ -58,9 +58,9 @@ namespace HitachiQA.StepDefinition
         [When(@"user continues to enter General Info")]
         public void WhenUserContinuesToEnterGeneralInfo()
         {
+            string uniqueID = Functions.GetRandomInteger().ToString();
             SharedObjects.NewButton.Click();
             Wait();
-            string uniqueID = Functions.GetRandomInteger().ToString();
             VendorName = "autoVendor" + uniqueID;
             VendorFirst = "TheFirst";
             VendorMiddle = "TheSecond";
