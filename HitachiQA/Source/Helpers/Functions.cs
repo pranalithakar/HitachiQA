@@ -362,7 +362,7 @@ namespace HitachiQA.Helpers
             }
         }
 
-        public static int GetRandomInteger(int max=100)
+        public static int GetRandomInteger(int max=1000)
         {
            return new Random().Next(max);  
         }
