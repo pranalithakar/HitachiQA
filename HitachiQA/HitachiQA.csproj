@@ -34,4 +34,12 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im dotnet.exe" />
+		<Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im msedgedriver.exe" />
+		<Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im MicrosoftWebDriver.exe" />
+		<Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im chromedriver.exe" />
+		<Exec Command="taskkill /f /fi &quot;pid gt 0&quot; /im geckodriver.exe" />
+	</Target>
 </Project>
