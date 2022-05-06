@@ -1,8 +1,6 @@
 ﻿using HitachiQA.Driver;
 using HitachiQA.Helpers;
 using HitachiQA.Pages;
-using OpenQA.Selenium;
-using System;
 using TechTalk.SpecFlow;
 
 namespace HitachiQA.StepDefinition

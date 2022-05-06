@@ -1,13 +1,8 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using OpenQA.Selenium;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Collections.Generic;
-using TechTalk.SpecFlow;
 using HitachiQA.Driver;
-using System.Linq;
 
 namespace HitachiQA.Helpers
 {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using HitachiQA.Helpers;
 using HitachiQA.Driver;
-using NUnit.Framework.Constraints;
 using NUnit.Framework;
-using System.Linq;
 using NUnitAssert = NUnit.Framework.Assert;
 namespace HitachiQA
 {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Data;
+﻿using System.Text;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Collections;
 
 namespace HitachiQA.Helpers
