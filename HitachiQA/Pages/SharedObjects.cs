@@ -7,6 +7,23 @@ namespace HitachiQA.Pages
 {
     public class SharedObjects
     {
+        //
+        // Heahers, Titles, etc
+        //
+
+        public static Element PublishedAppsTitle => new Element("//h2[contains(text(), 'Published Apps')]");
+
+
+        //
+        // Left Navigation
+        //
+
+        public static Element GetLeftNavItem(string LeftNavItem)
+        {
+            return new Element($"//*[@role='treeitem' and @title='{LeftNavItem}']");
+        }
+
+
         public static Element GetPublishedApp(string AppName)
         {
             return new Element($"//*[@role='listitem'][descendant::*[@title='{AppName}']]");
@@ -19,7 +36,8 @@ namespace HitachiQA.Pages
 
         public static Element GetButton(string ButtonName)
         {
-            return new Element($"//*[@value='{ButtonName}']");
+            return new Element($"//*[@value='{ButtonName}'] |" +
+                               $"//button[@aria-label='{ButtonName}']");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace HitachiQA.Driver
 {
     class UserActions
     {
-        public const int DEFAULT_WAIT_SECONDS = 30;
+        public const int DEFAULT_WAIT_SECONDS = 40;
         private static bool HIGHLIGHT_ON = Boolean.Parse(Environment.GetEnvironmentVariable("HIGHLIGHT_ON") ?? "false");
 
         //Most applications have some sort of loading screen, please allow this variable to hold the that locator. please set this xpath in your .env.json file
@@ -20,7 +20,7 @@ namespace HitachiQA.Driver
                 //this is optional
                 try
                 {
-                    FindElementWaitUntilVisible(locator, 1);
+                    FindElementWaitUntilVisible(locator, 3);
                     WaitForElementToDisappear(locator, 120);
                 }
                 catch(Exception)
