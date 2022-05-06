@@ -20,7 +20,7 @@ namespace HitachiQA.Driver
                 //this is optional
                 try
                 {
-                    FindElementWaitUntilVisible(locator, 3);
+                    FindElementWaitUntilVisible(locator, 15);
                     WaitForElementToDisappear(locator, 120);
                 }
                 catch(Exception)

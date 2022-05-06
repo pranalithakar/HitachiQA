@@ -34,7 +34,7 @@ namespace HitachiQA.StepDefinition
         [Given(@"The user nagivates to work order page")]
         public void GivenTheUserNagivatesToWorkOrderPage()
         {
-            SharedObjects.PublishedAppsTitle.assertElementIsVisible(15, true);
+            SharedObjects.PublishedAppsTitle.assertElementIsVisible(5, true);
             var fieldService = Environment.GetEnvironmentVariable("FIELDSERVICE");
             UserActions.Navigate(fieldService);
             Wait();
@@ -48,46 +48,25 @@ namespace HitachiQA.StepDefinition
             SharedObjects.GetButton("New").Click();
         }
 
-
-        [Then(@"User enters Service Account '(.*)'")]
-        public void ThenUserEntersServiceAccount(string serviceAccount)
+        [Given(@"user enters required work order Info '([^']*)'")]
+        public void GivenUserEntersRequiredWorkOrderInfo(string fabName)
         {
-            //SharedObjects.ServiceAccount.Click();
-            //SharedObjects.ServiceAccount.setText(serviceAccount);
-            //SharedObjects.ServiceAccountSearchBtn.Click();
-            //SharedObjects.ServiceAccountListElementXpath.WaitUntilClickable();
-            //SharedObjects.ServiceAccountListElementXpath.TryClick();
-        }
+            WorkOrderPage.FabInput.setText(fabName);
+            WorkOrderPage.SelectOptionItem(fabName).WaitUntilClickable();
+            WorkOrderPage.SelectOptionItem(fabName).Click();
 
-        [Then(@"User Enters Functional Location as '(.*)'")]
-        public void ThenUserEntersFunctionalLocationAs(string functionalLocation)
-        {
-            //SharedObjects.FunctionalLocation.Click();
-            //SharedObjects.FunctionalLocation.setText(functionalLocation);
-            //SharedObjects.FunctionalLocationItemsList(functionalLocation).TryClick();
-        }
-
-        [Then(@"User enters Work order type as '(.*)'")]
-        public void ThenUserEntersWorkOrderTypeAs(string workOrderType)
-        {
-            //SharedObjects.WorkOrderType.Click();
-            //SharedObjects.WorkOrderType.setText(workOrderType);
-            //var options = WorkOrdersPage.WorkOrderType.ListofElements(WorkOrdersPage.WorkOrdeTypeListElementXpath.ToString());
-            //options.ForEach(x => x.Click());
-        }
-
-        [Then(@"User click on Save and close button")]
-        public void ThenUserClickOnSaveAndCloseButton()
-        {
-            //SharedObjects.SaveButton.Click();
+            string woType = "Test";
+            WorkOrderPage.WOType.setText(woType);
+            WorkOrderPage.SelectOptionItem("Test WO Type").WaitUntilClickable();
+            WorkOrderPage.SelectOptionItem("Test WO Type").Click();
         }
 
         [Then(@"Work order is created and saved")]
         public void ThenWorkOrderIsCreatedAndSaved()
         {
-            //Assert.IsTrue(SharedObjects.WorkOrderHeader.GetInnerText().Contains(" - Saved"));
-            //var OrderText = SharedObjects.WorkOrderHeader.GetInnerText().Replace(" - Saved", "");
-            //Convert.ToInt32(OrderText);
+            SharedObjects.AdminSaveButton.Click();
+            WorkOrderPage.WOSaving.assertElementNotPresent(15, true);
+            WorkOrderPage.WOStatus.assertElementContainsText("Saved");
         }
 
     }

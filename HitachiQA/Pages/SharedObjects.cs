@@ -8,6 +8,12 @@ namespace HitachiQA.Pages
     public class SharedObjects
     {
         //
+        // Top Navigation
+        //
+
+        public static Element AdminSaveButton => new Element("//button[@aria-label='Save (CTRL+S)']");
+
+        //
         // Heahers, Titles, etc
         //
 
