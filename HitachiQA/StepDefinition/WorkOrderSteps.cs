@@ -43,6 +43,7 @@ namespace HitachiQA.StepDefinition
         {
             SharedObjects.GetLeftNavItem("Work Orders").Click();
             Wait();
+            SharedObjects.GetButton("New").WaitUntilClickable();
             SharedObjects.GetButton("New").Click();
         }
 
@@ -64,7 +65,11 @@ namespace HitachiQA.StepDefinition
         {
             SharedObjects.AdminSaveButton.Click();
             WorkOrderPage.WOSaving.assertElementNotPresent(15, true);
-            WorkOrderPage.WOStatus.assertElementContainsText("Saved");
+            try { WorkOrderPage.WOStatus.assertElementContainsText("Saved"); }
+            catch {
+                Thread.Sleep(300);
+                WorkOrderPage.WOStatus.assertElementContainsText("Saved");
+            }
         }
     }
 }
