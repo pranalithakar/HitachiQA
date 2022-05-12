@@ -66,6 +66,5 @@ namespace HitachiQA.StepDefinition
             WorkOrderPage.WOSaving.assertElementNotPresent(15, true);
             WorkOrderPage.WOStatus.assertElementContainsText("Saved");
         }
-
     }
 }
