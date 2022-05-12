@@ -7,7 +7,7 @@ namespace HitachiQA.Driver
 {
     class UserActions
     {
-        public const int DEFAULT_WAIT_SECONDS = 40;
+        public const int DEFAULT_WAIT_SECONDS = 65;
         private static bool HIGHLIGHT_ON = Boolean.Parse(Environment.GetEnvironmentVariable("HIGHLIGHT_ON") ?? "false");
 
         //Most applications have some sort of loading screen, please allow this variable to hold the that locator. please set this xpath in your .env.json file

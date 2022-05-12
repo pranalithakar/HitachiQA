@@ -64,12 +64,12 @@ namespace HitachiQA.StepDefinition
         public void ThenWorkOrderIsCreatedAndSaved()
         {
             SharedObjects.AdminSaveButton.Click();
-            WorkOrderPage.WOSaving.assertElementNotPresent(15, true);
-            try { WorkOrderPage.WOStatus.assertElementContainsText("Saved"); }
-            catch {
-                Thread.Sleep(300);
-                WorkOrderPage.WOStatus.assertElementContainsText("Saved");
+            WorkOrderPage.WOSaving.assertElementNotPresent(20, true);
+            if (WorkOrderPage.WOStatus.assertElementContainsText("- Saving", true))
+            {
+                Thread.Sleep(5000);
             }
+            WorkOrderPage.WOStatus.assertElementContainsText("Saved");
         }
     }
 }
