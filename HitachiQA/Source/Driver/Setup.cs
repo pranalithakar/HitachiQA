@@ -19,7 +19,6 @@ namespace HitachiQA.Driver
     {
         private static IObjectContainer _objectContainer;
         public static IWebDriver driver = null;
-        public static IWebDriver driverTemp;
         public static String SourceDir = Environment.GetEnvironmentVariable("SourceDir/../net6.0/") ?? "";
         public static Dictionary<int, int> TestCaseOutcome = new Dictionary<int, int> ();
         public static bool isNoBrowserFeature = false;
@@ -27,12 +26,6 @@ namespace HitachiQA.Driver
         public Setup(IObjectContainer objectContainer)
         {
             _objectContainer = objectContainer;
-        }
-
-        [BeforeTestRun]
-        public static void BeforeTestRun()
-        {
-            invokeEnvironmentVariables(Environment.GetEnvironmentVariable("ENVIRONMENT_FILE") ?? Environment.GetEnvironmentVariable("ENVIRONMENT_FILE", EnvironmentVariableTarget.User) ?? "default.env.json");   
         }
 
         public static void invokeNewDriver()
@@ -66,16 +59,13 @@ namespace HitachiQA.Driver
         [BeforeScenario("newWindow", Order =1)]
         public static void pre_NewWindow()
         {
-            driverTemp = driver;
-            invokeNewDriver();
+            throw new NotImplementedException();
         }
 
         [AfterScenario("newWindow", Order=1)]
         public static void post_NewWindow()
         {
-            driver.Close();
-            driver.Quit();
-            driver = driverTemp;
+            throw new NotImplementedException();
         }
 
         [BeforeScenario]

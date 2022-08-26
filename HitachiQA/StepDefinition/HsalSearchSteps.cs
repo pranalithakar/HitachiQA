@@ -26,8 +26,7 @@ namespace HitachiQA.StepDefinition
         [Given(@"user landed on HSAL homepage")]
         public void GivenUserLandedOnHSALHomepage()
         {
-
-         Pages.HsalHome.navigate();
+            Pages.HsalHome.navigate();
         }
 
 

@@ -9,13 +9,15 @@ namespace HitachiQA.Driver
     public class Element
     {
         public By locator;
-
-        public Element(string xpath)
+        private readonly UserActions UserActions;
+        public Element(string xpath, UserActions userActions)
         {
+            this.UserActions = userActions;
             this.locator = By.XPath(xpath);
         }
-        public Element(By locator)
+        public Element(By locator, UserActions userActions)
         {
+            this.UserActions = userActions;
             this.locator = locator;
         }
         
@@ -55,14 +57,14 @@ namespace HitachiQA.Driver
             UserActions.DoubleClick(locator);
         }
 
-        public bool Click(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional =false)
+        public bool Click(int? wait_Seconds = null, bool optional =false)
         {
-            return UserActions.Click(locator, wait_Seconds, optional);
+            return UserActions.Click(locator, UserActions.ProcessWaitParam(wait_Seconds), optional);
         }
 
-        public bool TryClick(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+        public bool TryClick(int? wait_Seconds = null)
         {
-            return this.Click(wait_Seconds, true); 
+            return this.Click(UserActions.ProcessWaitParam(wait_Seconds), true); 
         }
 
         public string GetAttribute(string attributeName)
@@ -125,9 +127,9 @@ namespace HitachiQA.Driver
         ///  Waits for the element to be vissible in the page
         /// </summary>
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
-        public bool assertElementIsVisible(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
+        public bool assertElementIsVisible(int? wait_Seconds = null, bool optional = false)
         {
-            try { UserActions.FindElementWaitUntilVisible(locator, wait_Seconds);
+            try { UserActions.FindElementWaitUntilVisible(locator, UserActions.ProcessWaitParam(wait_Seconds));
                 return true;
             }
             catch (Exception ex)
@@ -142,9 +144,9 @@ namespace HitachiQA.Driver
         /// </summary>
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
 
-        public bool assertElementIsPresent(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
+        public bool assertElementIsPresent(int? wait_Seconds = null, bool optional = false)
         {
-            try { UserActions.FindElementWaitUntilPresent(locator, wait_Seconds);
+            try { UserActions.FindElementWaitUntilPresent(locator, UserActions.ProcessWaitParam(wait_Seconds));
                 return true;
             }
             catch (Exception ex)
@@ -160,9 +162,9 @@ namespace HitachiQA.Driver
         /// </summary>
         /// <param name="optional">if set to true failure will be contained and no exception will be thrown </param>
 
-        public bool assertElementNotPresent(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
+        public bool assertElementNotPresent(int? wait_Seconds = null, bool optional = false)
         {
-            try { UserActions.WaitForElementToDisappear(locator, wait_Seconds);
+            try { UserActions.WaitForElementToDisappear(locator, UserActions.ProcessWaitParam(wait_Seconds));
                 return true;
             }
             catch (Exception ex)
@@ -189,9 +191,9 @@ namespace HitachiQA.Driver
             }
         }
 
-        public IWebElement WaitUntilClickable(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS, bool optional = false)
+        public IWebElement WaitUntilClickable(int? wait_Seconds = null, bool optional = false)
         {
-            return UserActions.FindElementWaitUntilClickable(locator, wait_Seconds);
+            return UserActions.FindElementWaitUntilClickable(locator, UserActions.ProcessWaitParam(wait_Seconds));
         }
 
         public void setValue(string fieldType, string value)
@@ -213,17 +215,17 @@ namespace HitachiQA.Driver
         //
         //  Text Fields Actions
         //
-        public void setText(String TextToEnter, int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+        public void setText(String TextToEnter, int? wait_Seconds = null)
         {
-            UserActions.setText(locator, TextToEnter, wait_Seconds);
+            UserActions.setText(locator, TextToEnter, UserActions.ProcessWaitParam(wait_Seconds));
         }
 
-        public string getTextFieldText(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+        public string getTextFieldText(int? wait_Seconds = null)
         {
-           return  UserActions.getTextFieldText(locator, wait_Seconds);
+           return  UserActions.getTextFieldText(locator, UserActions.ProcessWaitParam(wait_Seconds));
         }
 
-        public void clearTextField(int wait_Seconds = UserActions.DEFAULT_WAIT_SECONDS)
+        public void clearTextField()
         {
             UserActions.clearTextField(locator);
         }

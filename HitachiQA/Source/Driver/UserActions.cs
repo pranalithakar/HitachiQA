@@ -6,19 +6,48 @@ using System.Threading;
 using HitachiQA.Helpers;
 using System.Linq;
 using OpenQA.Selenium.Interactions;
+using Microsoft.Extensions.Configuration;
 
 namespace HitachiQA.Driver
 {
-    class UserActions
+    public class UserActions
     {
-        public const int DEFAULT_WAIT_SECONDS = 30;
-        private static bool HIGHLIGHT_ON = Boolean.Parse(Environment.GetEnvironmentVariable("HIGHLIGHT_ON") ?? "false");
+        private readonly IWebDriver WebDriver;
+        private readonly IConfiguration Configuration;
+        public UserActions(IWebDriver webDriver, IConfiguration config)
+        {
+            this.WebDriver = webDriver;
+            this.Configuration = config;
+
+            var configKeys = this.Configuration.GetChildren();
+            var wait = configKeys.FirstOrDefault(it => it.Key == "DEFAULT_WAIT_SECONDS");
+            var highlight = configKeys.FirstOrDefault(it => it.Key == "HIGHLIGHT_ON");
+            var loadingXPath = configKeys.FirstOrDefault(it => it.Key == "LOADING_SCREEN_XPATH");
+
+            if(wait!= null){
+                DEFAULT_WAIT_SECONDS = int.Parse(wait.Value);
+            }
+            if (highlight != null){
+                HIGHLIGHT_ON = bool.Parse(highlight.Value);
+            }
+            if (loadingXPath != null){
+                LOADING_SCREEN_XPATH = loadingXPath.Value;
+            }
+        }
+
+        public int DEFAULT_WAIT_SECONDS = 30;
+
+        public bool HIGHLIGHT_ON = false;
 
         //Most applications have some sort of loading screen, please allow this variable to hold the that locator. please set this xpath in your .env.json file
-        private static readonly String LOADING_SCREEN_XPATH = Environment.GetEnvironmentVariable("LOADING_SCREEN_XPATH");
-        public static void waitForPageLoad()
+        private readonly String LOADING_SCREEN_XPATH = "";
+
+        public int ProcessWaitParam(int? wait) => (int)(wait == null ? DEFAULT_WAIT_SECONDS : wait);
+
+
+        public void waitForPageLoad()
         {
-            if(LOADING_SCREEN_XPATH != null)
+            if(!string.IsNullOrWhiteSpace(LOADING_SCREEN_XPATH))
             {
                 By locator = By.XPath(LOADING_SCREEN_XPATH);
                 //this is optional
@@ -35,7 +64,7 @@ namespace HitachiQA.Driver
         }
   
 
-        public static void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
+        public void Navigate(string URL_OR_PATH, params (string key, string value)[] parameters)
         {
             var URL = Functions.ParseURL(URL_OR_PATH, parameters);
             Log.Info("Navigate to: " + URL);
@@ -43,28 +72,28 @@ namespace HitachiQA.Driver
             Navigate(URL);
         }
         
-        public static void Navigate(string URL_OR_PATH)
+        public void Navigate(string URL_OR_PATH)
         {
             var URL = Functions.ParseURL(URL_OR_PATH);
             Log.Info("Navigate to: " + URL);
            
-            Setup.driver.Navigate().GoToUrl(URL);           
+            this.WebDriver.Navigate().GoToUrl(URL);           
         }
 
-        public static string GetCurrentURL()
+        public string GetCurrentURL()
         {
-            return Setup.driver.Url;
+            return this.WebDriver.Url;
         }
 
-        public static void Refresh()
+        public void Refresh()
         {
-            Setup.driver.Navigate().Refresh();
+            this.WebDriver.Navigate().Refresh();
             WaitForSpinnerToDisappear();
         }
 
-        public static void Back()
+        public void Back()
         {
-            Setup.driver.Navigate().Back();
+            this.WebDriver.Navigate().Back();
             WaitForSpinnerToDisappear();
         }
 
@@ -72,31 +101,31 @@ namespace HitachiQA.Driver
         // General Element Actions
         //
 
-        public static string getElementText(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public string getElementText(By ElementLocator, int? wait_Seconds = null)
         {
-            var textField = FindElementWaitUntilVisible(ElementLocator, wait_Seconds);
+            var textField = FindElementWaitUntilVisible(ElementLocator, ProcessWaitParam(wait_Seconds));
             return textField.Text.Trim();
         }
 
-        public static bool Click(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
+        public bool Click(By ElementLocator, int? wait_Seconds = null, bool optional = false)
         {
             try
             {
                 try
                 {
-                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+                    FindElementWaitUntilClickable(ElementLocator, ProcessWaitParam(wait_Seconds)).Click();
                 }
                 catch (StaleElementReferenceException)
                 {
                     Thread.Sleep(1000);
-                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+                    FindElementWaitUntilClickable(ElementLocator, ProcessWaitParam(wait_Seconds)).Click();
 
                 }
                 catch (ElementClickInterceptedException)
                 {
                     waitForPageLoad();
 
-                    FindElementWaitUntilClickable(ElementLocator, wait_Seconds).Click();
+                    FindElementWaitUntilClickable(ElementLocator, ProcessWaitParam(wait_Seconds)).Click();
                 }
                 catch(Exception ex)
                 {
@@ -111,20 +140,20 @@ namespace HitachiQA.Driver
             return true;
         }
 
-        public static bool DoubleClick(By ElementLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS, bool optional = false)
+        public bool DoubleClick(By ElementLocator, int? wait_Seconds = null, bool optional = false)
         {
-            Actions Action = new Actions(Setup.driver);
+            Actions Action = new Actions(this.WebDriver);
             try
             {
                 try
                 {
-                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    var element = FindElementWaitUntilClickable(ElementLocator, ProcessWaitParam(wait_Seconds));
                     Action.DoubleClick(element).Build().Perform();
                 }
                 catch (StaleElementReferenceException)
                 {
                     Thread.Sleep(1000);
-                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    var element = FindElementWaitUntilClickable(ElementLocator, ProcessWaitParam(wait_Seconds));
                     Action.DoubleClick(element).Build().Perform();
 
                 }
@@ -132,7 +161,7 @@ namespace HitachiQA.Driver
                 {
                     waitForPageLoad();
 
-                    var element = FindElementWaitUntilClickable(ElementLocator, wait_Seconds);
+                    var element = FindElementWaitUntilClickable(ElementLocator, ProcessWaitParam(wait_Seconds));
                     Action.DoubleClick(element).Build().Perform();
                 }
                 catch (Exception ex)
@@ -148,21 +177,21 @@ namespace HitachiQA.Driver
             return true;
         }
 
-        public static bool GetIsDisabled(By elementLocator)
+        public bool GetIsDisabled(By elementLocator)
         {
             var element = FindElementWaitUntilVisible(elementLocator);
 
             return element.Displayed;
         }
 
-        public static string GetAttribute(By ElementLocator, string attributeName)
+        public string GetAttribute(By ElementLocator, string attributeName)
         {
             return FindElementWaitUntilClickable(ElementLocator).GetAttribute(attributeName);
         }
 
-        public static IWebElement FindElementWaitUntilVisible(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public IWebElement FindElementWaitUntilVisible(By by, int? wait_Seconds = null)
         {
-            WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
+            WebDriverWait wait = new WebDriverWait(this.WebDriver, TimeSpan.FromSeconds(ProcessWaitParam(wait_Seconds)));
             IWebElement target;
 
             try
@@ -192,9 +221,9 @@ namespace HitachiQA.Driver
             return target;
         }
 
-        public static List<IWebElement> FindElementsWaitUntilVisible(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public List<IWebElement> FindElementsWaitUntilVisible(By by, int? wait_Seconds = null)
         {
-            WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
+            WebDriverWait wait = new WebDriverWait(this.WebDriver, TimeSpan.FromSeconds(ProcessWaitParam(wait_Seconds)));
             IWebElement target;
 
             try
@@ -216,13 +245,13 @@ namespace HitachiQA.Driver
                 target = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
             }
 
-            return Setup.driver.FindElements(by).ToList();
+            return this.WebDriver.FindElements(by).ToList();
         }
 
         //Find Element - Wait until element is present (different from vissible)
-        public static IWebElement FindElementWaitUntilPresent(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public IWebElement FindElementWaitUntilPresent(By by, int? wait_Seconds = null)
         {
-            WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
+            WebDriverWait wait = new WebDriverWait(this.WebDriver, TimeSpan.FromSeconds(ProcessWaitParam(wait_Seconds)));
             IWebElement target;
 
             try
@@ -252,9 +281,9 @@ namespace HitachiQA.Driver
         }
 
         //Find Element - Wait Until Clickable
-        public static IWebElement FindElementWaitUntilClickable(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public IWebElement FindElementWaitUntilClickable(By by, int? wait_Seconds = null)
         {
-            WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
+            WebDriverWait wait = new WebDriverWait(this.WebDriver, TimeSpan.FromSeconds(ProcessWaitParam(wait_Seconds)));
             IWebElement target;
 
           
@@ -281,9 +310,9 @@ namespace HitachiQA.Driver
 
             return target;
         }
-        public static void WaitForElementToDisappear(By by, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public void WaitForElementToDisappear(By by, int? wait_Seconds = null)
         {
-            WebDriverWait wait = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(wait_Seconds));
+            WebDriverWait wait = new WebDriverWait(this.WebDriver, TimeSpan.FromSeconds(ProcessWaitParam(wait_Seconds)));
 
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(by));            
         }
@@ -292,24 +321,24 @@ namespace HitachiQA.Driver
         //  Text Fields Actions
         //
 
-        public static void setText(By TextFieldLocator, String TextToEnter, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public void setText(By TextFieldLocator, String TextToEnter, int? wait_Seconds = null)
         {
-            var textField = FindElementWaitUntilClickable(TextFieldLocator, wait_Seconds);
+            var textField = FindElementWaitUntilClickable(TextFieldLocator, ProcessWaitParam(wait_Seconds));
             textField.Click();
             textField.SendKeys(Keys.Control + "a");
             textField.SendKeys(Keys.Delete);
             textField.SendKeys(TextToEnter);
         }
 
-        public static string getTextFieldText(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public string getTextFieldText(By TextFieldLocator, int? wait_Seconds = null)
         {
-            var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
+            var textField = FindElementWaitUntilVisible(TextFieldLocator, ProcessWaitParam(wait_Seconds));
             return textField.GetAttribute("value"); 
         }
 
-        public static void clearTextField(By TextFieldLocator, int wait_Seconds = DEFAULT_WAIT_SECONDS)
+        public void clearTextField(By TextFieldLocator, int? wait_Seconds = null)
         {
-            var textField = FindElementWaitUntilVisible(TextFieldLocator, wait_Seconds);
+            var textField = FindElementWaitUntilVisible(TextFieldLocator, ProcessWaitParam(wait_Seconds));
             textField.SendKeys(Keys.Control + "a");
             textField.SendKeys(Keys.Delete);
         }
@@ -318,24 +347,24 @@ namespace HitachiQA.Driver
         // Dropdown actions 
         // 
 
-        public static void SelectMatDropdownOptionByText(By DropdownLocator, string optionDisplayText)
+        public void SelectMatDropdownOptionByText(By DropdownLocator, string optionDisplayText)
         {
             Click(DropdownLocator);
             Click(By.XPath($"//mat-option[descendant::*[normalize-space(text())= '{optionDisplayText}']]"));
         }
-        public static void SelectMatDropdownOptionContainingText(By DropdownLocator, string optionDisplayText)
+        public void SelectMatDropdownOptionContainingText(By DropdownLocator, string optionDisplayText)
         {
             Click(DropdownLocator);
             Click(By.XPath($"//mat-option[descendant::*[contains(normalize-space(text()), '{optionDisplayText}')]]"));
         }
 
-        public static void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex)
+        public void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex)
         {
             Click(DropdownLocator);
             Click(By.XPath($"//mat-option[{LogicalIndex + 1}]"));
         }
 
-        public static void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex, out string selectionDisplayName)
+        public void SelectMatDropdownOptionByIndex(By DropdownLocator, int LogicalIndex, out string selectionDisplayName)
         {
             Click(DropdownLocator);
             try
@@ -345,11 +374,11 @@ namespace HitachiQA.Driver
             {
             }
             var options = FindElementsWaitUntilVisible(By.XPath($"//mat-option"));
-            selectionDisplayName = string.Join("", Setup.driver.FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
+            selectionDisplayName = string.Join("", this.WebDriver.FindElements(By.XPath($"(//mat-option)[{LogicalIndex + 1}]/descendant::*")).Select(it => it.Text.Trim()).Distinct());
             Click(By.XPath($"//mat-option[{LogicalIndex + 1}]"));
         }
 
-        public static IEnumerable<String> GetAllMatDropdownOptions(By DropdownLocator)
+        public IEnumerable<String> GetAllMatDropdownOptions(By DropdownLocator)
         {
             var dropdown = FindElementWaitUntilClickable(DropdownLocator);
             dropdown.Click();
@@ -368,7 +397,7 @@ namespace HitachiQA.Driver
         // Radio Button
         //
 
-        public static bool IsRadioButtonSelected(By RadioButtonLocator)
+        public bool IsRadioButtonSelected(By RadioButtonLocator)
         {
             var radioButton =FindElementWaitUntilPresent(RadioButtonLocator);
 
@@ -379,7 +408,7 @@ namespace HitachiQA.Driver
         // Checkbox
         //
 
-        public static void SetMattCheckboxState(By MattCheckBoxLocator, bool state)
+        public void SetMattCheckboxState(By MattCheckBoxLocator, bool state)
         {
             var mattCheckBox = FindElementWaitUntilVisible(MattCheckBoxLocator);
 
@@ -389,13 +418,13 @@ namespace HitachiQA.Driver
             }
         }
 
-        public static bool GetMattCheckboxState(By MattCheckBoxLocator)
+        public bool GetMattCheckboxState(By MattCheckBoxLocator)
         {
             var mattCheckBox = FindElementWaitUntilClickable(MattCheckBoxLocator);
             return GetCheckboxState(By.Id(mattCheckBox.GetAttribute("id") + "-input"));
         }
 
-        public static bool GetCheckboxState(By CheckBoxInputLocator)
+        public bool GetCheckboxState(By CheckBoxInputLocator)
         {
             var CheckboxInput = FindElementWaitUntilVisible(CheckBoxInputLocator);
 
@@ -405,26 +434,26 @@ namespace HitachiQA.Driver
 
         // Scroll
 
-        public static void ScrollIntoView(IWebElement element)
+        public void ScrollIntoView(IWebElement element)
         {
             JSExecutor.execute($"arguments[0].scrollIntoView();", element);
         }
 
-        public static void ScrollToBottom()
+        public void ScrollToBottom()
         {
-            new Actions(Setup.driver).SendKeys(Keys.End).Build().Perform();  
+            new Actions(this.WebDriver).SendKeys(Keys.End).Build().Perform();  
         }
 
-        public static void ScrollToTop()
+        public void ScrollToTop()
         {
-            new Actions(Setup.driver).SendKeys(Keys.Home).Build().Perform();
+            new Actions(this.WebDriver).SendKeys(Keys.Home).Build().Perform();
         }
 
         //
         //  Javascript
         //
 
-        private static void highlight(IWebElement target)
+        private void highlight(IWebElement target)
         {
             JSExecutor.highlight(target);
             Thread.Sleep(200);
@@ -439,10 +468,10 @@ namespace HitachiQA.Driver
         }
 
         //spinner
-        public static void WaitForSpinnerToDisappear()
+        public void WaitForSpinnerToDisappear()
         {
-            WebDriverWait waitAppear = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(5));
-            WebDriverWait waitDisappear = new WebDriverWait(Setup.driver, TimeSpan.FromSeconds(DEFAULT_WAIT_SECONDS));
+            WebDriverWait waitAppear = new WebDriverWait(this.WebDriver, TimeSpan.FromSeconds(5));
+            WebDriverWait waitDisappear = new WebDriverWait(this.WebDriver, TimeSpan.FromSeconds(DEFAULT_WAIT_SECONDS));
 
             By spinnerBy = By.XPath("//bh-mat-spinner-overlay");
 
@@ -458,12 +487,12 @@ namespace HitachiQA.Driver
 
         }
 
-        public static IEnumerable<Dictionary<String, String>> parseUITable(string datatableXpath)
+        public IEnumerable<Dictionary<String, String>> parseUITable(string datatableXpath)
         {
             FindElementWaitUntilPresent(By.XPath(datatableXpath));
-            List<String> columnNames = Setup.driver.FindElements(By.XPath(datatableXpath + "//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
+            List<String> columnNames = this.WebDriver.FindElements(By.XPath(datatableXpath + "//datatable-header-cell//span[contains(@class,'datatable-header-cell-label')]")).Select(element => element.Text).ToList<String>();
 
-            int rowCount = Driver.Setup.driver.FindElements(By.XPath(datatableXpath + "//datatable-body-row")).Count;
+            int rowCount = this.WebDriver.FindElements(By.XPath(datatableXpath + "//datatable-body-row")).Count;
             for (int rowIndex = 1; rowIndex <= rowCount; rowIndex++)
             {
                 var rowDict = new Dictionary<String, String>();
@@ -471,7 +500,7 @@ namespace HitachiQA.Driver
                 for (int i = 0; i < columnNames.Count(); i++)
                 {
                     // String cellText = string.Join("", cells[i].FindElements(By.XPath("/descendant::*"))
-                    String cellText = string.Join("", Driver.Setup.driver
+                    String cellText = string.Join("", this.WebDriver
                                                       .FindElements(By.XPath($"(({datatableXpath} //datatable-body-row)[{rowIndex}] //datatable-body-cell)[{i + 1}]/descendant::*"))
                                                       .Select(child => child.Text).Distinct());
 
